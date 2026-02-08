@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import math
 import torch
 from typing import TYPE_CHECKING
 
@@ -11,13 +12,98 @@ from isaaclab.assets import Articulation, RigidObject
 from isaaclab.managers import SceneEntityCfg
 from isaaclab.sensors import ContactSensor
 
+from unitree_rl_lab.tasks.locomotion.mdp import observations as mdp_obs
+
 if TYPE_CHECKING:
     from isaaclab.envs import ManagerBasedRLEnv
+
+
+def track_lin_vel_xy_adaptive(
+    env: ManagerBasedRLEnv,
+    command_name: str = "base_velocity",
+    std: float = 0.5,
+    sensor_cfg: SceneEntityCfg = SceneEntityCfg("height_scanner"),
+    flat_weight: float = 1.0,
+    slope_weight: float = 0.5,
+    slope_threshold_deg: float = 5.0,
+    min_valid_rays: int = 10,
+) -> torch.Tensor:
+    """Adaptive linear velocity tracking reward based on terrain type.
+
+    On flat terrain: weight = 1.0
+    On slope terrain: weight = 0.5 (reduced to prioritize stability over speed)
+
+    Uses height scanner for terrain detection (not projected_gravity).
+
+    Args:
+        env: The environment instance.
+        command_name: Name of the velocity command to track.
+        std: Standard deviation for exponential reward kernel.
+        sensor_cfg: Configuration for the height scanner sensor.
+        flat_weight: Reward weight multiplier on flat terrain.
+        slope_weight: Reward weight multiplier on sloped terrain.
+        slope_threshold_deg: Minimum slope angle (degrees) to classify as slope.
+        min_valid_rays: Minimum number of valid rays required.
+
+    Returns:
+        Adaptive velocity tracking reward for each environment.
+    """
+    from isaaclab_tasks.manager_based.locomotion.velocity.mdp import track_lin_vel_xy_yaw_frame_exp
+
+    base_reward = track_lin_vel_xy_yaw_frame_exp(env, command_name=command_name, std=std)
+
+    is_slope = mdp_obs.detect_terrain_from_height_scan(
+        env, sensor_cfg, slope_threshold_deg, min_valid_rays
+    )
+
+    weight = torch.where(is_slope.bool(), slope_weight, flat_weight)
+
+    return base_reward * weight
+
+
+def flat_orientation_l2_adaptive(
+    env: ManagerBasedRLEnv,
+    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
+    sensor_cfg: SceneEntityCfg = SceneEntityCfg("height_scanner"),
+    flat_weight: float = -5.0,
+    slope_weight: float = -10.0,
+    slope_threshold_deg: float = 5.0,
+    min_valid_rays: int = 10,
+) -> torch.Tensor:
+    """Adaptive orientation penalty based on terrain type.
+
+    On slopes, doubles orientation penalty (-10.0 vs -5.0) to encourage
+    better trunk stability on uneven terrain.
+
+    Uses height scanner for terrain detection (not projected_gravity).
+
+    Args:
+        env: The environment instance.
+        asset_cfg: Configuration for the robot asset.
+        sensor_cfg: Configuration for the height scanner sensor.
+        flat_weight: Reward weight multiplier on flat terrain.
+        slope_weight: Reward weight multiplier on sloped terrain.
+        slope_threshold_deg: Minimum slope angle (degrees) to classify as slope.
+        min_valid_rays: Minimum number of valid rays required.
+
+    Returns:
+        Adaptive orientation penalty for each environment.
+    """
+    from isaaclab_tasks.manager_based.locomotion.velocity.mdp import flat_orientation_l2
+
+    base_reward = flat_orientation_l2(env, asset_cfg=asset_cfg)
+
+    is_slope = mdp_obs.detect_terrain_from_height_scan(
+        env, sensor_cfg, slope_threshold_deg, min_valid_rays
+    )
+
+    weight = torch.where(is_slope.bool(), slope_weight, flat_weight)
+
+    return base_reward * weight
 
 """
 Joint penalties.
 """
-
 
 def energy(env: ManagerBasedRLEnv, asset_cfg: SceneEntityCfg = SceneEntityCfg("robot")) -> torch.Tensor:
     """Penalize the energy used by the robot's joints."""
@@ -223,3 +309,22 @@ def joint_mirror(env: ManagerBasedRLEnv, asset_cfg: SceneEntityCfg, mirror_joint
         )
     reward *= 1 / len(mirror_joints) if len(mirror_joints) > 0 else 0
     return reward
+
+
+__all__ = [
+    "energy",
+    "stand_still",
+    "orientation_l2",
+    "upward",
+    "joint_position_penalty",
+    "feet_stumble",
+    "feet_height_body",
+    "foot_clearance_reward",
+    "feet_too_near",
+    "feet_contact_without_cmd",
+    "air_time_variance_penalty",
+    "feet_gait",
+    "joint_mirror",
+    "track_lin_vel_xy_adaptive",
+    "flat_orientation_l2_adaptive",
+]

@@ -7,7 +7,6 @@
 
 """Launch Isaac Sim Simulator first."""
 
-
 import gymnasium as gym
 import pathlib
 import sys

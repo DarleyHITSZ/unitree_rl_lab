@@ -3,7 +3,7 @@
 
 # ======================== 可配置参数 ========================
 # 任务名称
-TASK_NAME="Unitree-G1-29dof-AdaptiveVelocity"
+TASK_NAME="Unitree-G1-29dof-AdaptiveVelocity-Comparison"
 # 训练迭代数
 MAX_ITERATIONS=10
 # 指定GPU设备

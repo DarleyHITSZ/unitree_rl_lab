@@ -178,7 +178,7 @@ class CommandsCfg:
         debug_vis=True,  # 启用指令调试可视化（显示目标速度）
         # 目标速度范围（训练时的基础范围）
         ranges=mdp.UniformLevelVelocityCommandCfg.Ranges(
-            lin_vel_x=(0.0, 0.1),  # x轴（前后）线速度范围
+            lin_vel_x=(0.1, 0.1),  # x轴（前后）线速度范围
             lin_vel_y=(0.0, 0.0),  # y轴（左右）线速度范围
             ang_vel_z=(0.0, 0.0),  # z轴（转向）角速度范围
         ),

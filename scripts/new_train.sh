@@ -5,7 +5,7 @@
 # 任务名称
 TASK_NAME="Unitree-G1-29dof-AdaptiveVelocity-Comparison"
 # 训练迭代数
-MAX_ITERATIONS=10
+MAX_ITERATIONS=10000
 # 指定GPU设备
 DEVICE="cuda:0"
 # ======================== 执行训练命令 ========================

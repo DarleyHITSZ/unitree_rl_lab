@@ -7,15 +7,14 @@ Guidelines for AI agents working on the Unitree RL Lab codebase - a reinforcemen
 ```bash
 # Installation
 ./unitree_rl_lab.sh -i                    # Install in editable mode
-pip install -e source/unitree_rl_lab/
 
 # Environments
 ./unitree_rl_lab.sh -l                    # List environments
 ./unitree_rl_lab.sh -t --task Unitree-G1-29dof-Velocity  # Train (headless)
 ./unitree_rl_lab.sh -p --task Unitree-G1-29dof-Velocity  # Play/visualize
 
-# Manual training
-python scripts/rsl_rl/train.py --task Unitree-G1-29dof-Velocity --headless
+# Manual training with options
+python scripts/rsl_rl/train.py --task Unitree-G1-29dof-Velocity --headless --num_envs 64
 python scripts/rsl_rl/play.py --task Unitree-G1-29dof-Velocity
 ```
 
@@ -25,7 +24,7 @@ python scripts/rsl_rl/play.py --task Unitree-G1-29dof-Velocity
 # All pre-commit hooks (run before committing)
 pre-commit run --all-files
 
-# Run on specific files
+# Run specific linter on a single file
 pre-commit run black --files path/to/file.py
 pre-commit run flake8 --files path/to/file.py
 pre-commit run isort --files path/to/file.py
@@ -38,15 +37,11 @@ pyright source/unitree_rl_lab/unitree_rl_lab/tasks/locomotion/mdp/rewards.py
 
 # Type check entire package
 pyright source/unitree_rl_lab/
-
-# Spell check
-pre-commit run codespell --all-files
 ```
 
-**Note**: This project has no traditional unit tests. Verification is done through training/play scripts:
+**Note**: This project has no traditional unit tests. Quick verification:
 ```bash
 ./unitree_rl_lab.sh -t --task Unitree-G1-29dof-Velocity --num_envs 64 --max_iterations 10
-./unitree_rl_lab.sh -p --task Unitree-G1-29dof-Velocity
 ```
 
 Pre-commit excludes `deploy/` and `.vscode/`.
@@ -60,11 +55,9 @@ from __future__ import annotations
 
 # 2. STDLIB
 import math
-import os
 from typing import TYPE_CHECKING
 
 # 3. THIRDPARTY (torch, numpy, gymnasium treated as stdlib per pyproject.toml)
-import gymnasium as gym
 import torch
 
 # 4. ISAACLABPARTY
@@ -79,18 +72,25 @@ from unitree_rl_lab.assets.robots.unitree import UNITREE_G1_29DOF_CFG
 from unitree_rl_lab.tasks.locomotion import mdp
 
 # 6. LOCALFOLDER (config)
-# (if applicable)
 
 # TYPE_CHECKING imports at end
 if TYPE_CHECKING:
     from isaaclab.envs import ManagerBasedRLEnv
 ```
 
+**Note**: Some IsaacLab imports may require try/except for compatibility:
+```python
+try:
+    from isaaclab.utils.math import quat_apply_inverse
+except ImportError:
+    from isaaclab.utils.math import quat_rotate_inverse as quat_apply_inverse
+```
+
 ### Formatting
 - **Line length**: 120
 - **Formatter**: Black `--preview`
 - **Indentation**: 4 spaces (no tabs)
-- **Python**: 3.10+ (pyupgrade `--py37-plus` - note: project uses this but targets 3.10)
+- **Python**: 3.10+ (pyupgrade uses `--py37-plus` but project targets 3.10)
 - **Line breaks**: Before binary operators (W503 ignored)
 - **Custom lists**: Wrap with `# fmt: off` / `# fmt: on`
 - **Imports**: isort with `--profile black --filter-files`
@@ -107,13 +107,13 @@ if TYPE_CHECKING:
 |---------|-----------|---------|
 | Classes | PascalCase | `RobotEnvCfg` |
 | Config classes | PascalCase + `Cfg` | `RobotSceneCfg`, `ObservationsCfg` |
-| Constants | UPPER_SNAKE_CASE | `UNITREE_MODEL_DIR`, `NATURAL_FREQ` |
+| Constants | UPPER_SNAKE_CASE | `UNITREE_MODEL_DIR`, `COBBLESTONE_ROAD_CFG` |
 | Functions/variables | snake_case | `reset_joints()`, `base_reward` |
 | Private methods | `_snake_case()` | `_process_obs()` |
 | Files | snake_case | `velocity_env_cfg.py` |
 | Module-level singletons | UPPER_SNAKE_CASE | `UNITREE_G1_29DOF_CFG` |
 
-### Docstrings (Google style, imperative mood)
+### Docstrings (Google style)
 ```python
 def track_lin_vel_xy_adaptive(
     env: ManagerBasedRLEnv,
@@ -141,13 +141,8 @@ def track_lin_vel_xy_adaptive(
 - Informative error messages with context
 
 ```python
-# Good: Specific exception with context
 if contact_sensor.cfg.track_air_time is False:
     raise RuntimeError("Activate ContactSensor's track_air_time!")
-
-# Good: Validation with clear message
-if not torch.cuda.is_available():
-    raise RuntimeError("CUDA is required for training.")
 ```
 
 ### Configuration Classes
@@ -166,7 +161,6 @@ class RobotEnvCfg(ManagerBasedRLEnvCfg):
     curriculum: CurriculumCfg = CurriculumCfg()
 
     def __post_init__(self):
-        """Post initialization."""
         self.decimation = 4
         self.episode_length_s = 20.0
         self.sim.dt = 0.005
@@ -183,20 +177,30 @@ Environment configs organize into these @configclass sections:
 - `TerminationsCfg`: Episode termination conditions
 - `CurriculumCfg`: Curriculum learning terms
 
-### File Structure
+### Flake8 Ignored Rules
+- `E402`: Module level import not at top of file
+- `E501`: Line too long (handled by black)
+- `W503`: Line break before binary operator
+- `E203`: Whitespace before ':' (conflicts with black)
+- `D401`: First line should be in imperative mood
+- `R504/R505`: Unnecessary variable/elif after return
+- `SIM102/SIM117`: Nested if-statement / merge with statements
+
+## File Structure
 ```
 source/unitree_rl_lab/unitree_rl_lab/
-├── __init__.py
 ├── assets/robots/           # Robot configurations (unitree.py, unitree_actuators.py)
 ├── tasks/
-│   ├── __init__.py
 │   ├── locomotion/          # Velocity-tracking environments
-│   │   ├── __init__.py
-│   │   ├── agents/          # PPO agent configs
+│   │   ├── agents/          # PPO agent configs (rsl_ppo_cfg_*.py)
 │   │   ├── mdp/             # Rewards, observations, commands, curriculums
 │   │   └── robots/{go2,h1,g1}/  # Per-robot environment configs
 │   └── mimic/               # Motion capture tracking
 └── utils/                   # export_deploy_cfg, parser_cfg
+
+scripts/
+├── list_envs.py
+└── rsl_rl/                  # Training scripts (train.py, play.py, cli_args.py)
 ```
 
 ## Commit Style
@@ -218,5 +222,5 @@ ISAACLAB_PATH=/path/to/IsaacLab             # Isaac Lab installation
 1. **Import errors**: Ensure Isaac Sim/Lab environment is activated (`conda activate env_isaaclab`)
 2. **CUDA errors**: Training requires CUDA-compatible GPU
 3. **RSL-RL version**: Version 2.3.1+ required for distributed training
-4. **Missing robots**: Set `UNITREE_MODEL_DIR` in `source/unitree_rl_lab/unitree_rl_lab/assets/robots/unitree.py`
-5. **pre-commit fails**: Run `pip install pre-commit && pre-commit install` to set up hooks
+4. **Missing robots**: Set `UNITREE_MODEL_DIR` or `UNITREE_ROS_DIR` in `source/unitree_rl_lab/unitree_rl_lab/assets/robots/unitree.py`
+5. **pre-commit fails**: Run `pip install pre-commit && pre-commit install`

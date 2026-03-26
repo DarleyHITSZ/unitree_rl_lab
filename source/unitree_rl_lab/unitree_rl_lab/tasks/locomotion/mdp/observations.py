@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 def detect_terrain_from_height_scan(
     env: ManagerBasedRLEnv,
     sensor_cfg: SceneEntityCfg = SceneEntityCfg("height_scanner"),
-    slope_threshold_deg: float = 5.0,
+    slope_threshold_deg: float = 2.0,
     min_valid_rays: int = 10,
 ) -> torch.Tensor:
     """Detect if terrain is sloped using height scanner data.
@@ -63,7 +63,7 @@ def detect_terrain_from_height_scan(
 def terrain_type_obs_onehot(
     env: ManagerBasedRLEnv,
     sensor_cfg: SceneEntityCfg = SceneEntityCfg("height_scanner"),
-    slope_threshold_deg: float = 5.0,
+    slope_threshold_deg: float = 2.0,
     min_valid_rays: int = 10,
 ) -> torch.Tensor:
     """Generate one-hot terrain type observation.

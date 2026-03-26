@@ -18,6 +18,24 @@ if TYPE_CHECKING:
     from isaaclab.envs import ManagerBasedRLEnv
 
 
+def safe_reward(reward: torch.Tensor, clip_min: float = -100.0, clip_max: float = 100.0) -> torch.Tensor:
+    """Clip reward and replace NaN/Inf with zero.
+
+    This function protects against extreme reward values that can cause training instability.
+    NaN and Inf values are replaced with 0, and rewards are clipped to a reasonable range.
+
+    Args:
+        reward: Raw reward tensor of shape (num_envs,).
+        clip_min: Minimum clip value. Defaults to -100.0.
+        clip_max: Maximum clip value. Defaults to 100.0.
+
+    Returns:
+        Safe reward tensor with NaN/Inf replaced and values clipped.
+    """
+    reward = torch.where(torch.isnan(reward) | torch.isinf(reward), torch.zeros_like(reward), reward)
+    return torch.clamp(reward, min=clip_min, max=clip_max)
+
+
 def track_lin_vel_xy_adaptive(
     env: ManagerBasedRLEnv,
     command_name: str = "base_velocity",
@@ -25,7 +43,7 @@ def track_lin_vel_xy_adaptive(
     sensor_cfg: SceneEntityCfg = SceneEntityCfg("height_scanner"),
     flat_weight: float = 1.0,
     slope_weight: float = 0.5,
-    slope_threshold_deg: float = 5.0,
+    slope_threshold_deg: float = 2.0,
     min_valid_rays: int = 10,
 ) -> torch.Tensor:
     """Adaptive linear velocity tracking reward based on terrain type.
@@ -58,7 +76,7 @@ def track_lin_vel_xy_adaptive(
 
     weight = torch.where(is_slope.bool(), slope_weight, flat_weight)
 
-    return base_reward * weight
+    return safe_reward(base_reward * weight)
 
 
 def flat_orientation_l2_adaptive(
@@ -67,7 +85,7 @@ def flat_orientation_l2_adaptive(
     sensor_cfg: SceneEntityCfg = SceneEntityCfg("height_scanner"),
     flat_weight: float = -5.0,
     slope_weight: float = -10.0,
-    slope_threshold_deg: float = 5.0,
+    slope_threshold_deg: float = 2.0,
     min_valid_rays: int = 10,
 ) -> torch.Tensor:
     """Adaptive orientation penalty based on terrain type.
@@ -99,11 +117,13 @@ def flat_orientation_l2_adaptive(
 
     weight = torch.where(is_slope.bool(), slope_weight, flat_weight)
 
-    return base_reward * weight
+    return safe_reward(base_reward * weight)
+
 
 """
 Joint penalties.
 """
+
 
 def energy(env: ManagerBasedRLEnv, asset_cfg: SceneEntityCfg = SceneEntityCfg("robot")) -> torch.Tensor:
     """Penalize the energy used by the robot's joints."""
@@ -312,6 +332,7 @@ def joint_mirror(env: ManagerBasedRLEnv, asset_cfg: SceneEntityCfg, mirror_joint
 
 
 __all__ = [
+    "safe_reward",
     "energy",
     "stand_still",
     "orientation_l2",

@@ -34,7 +34,7 @@ COBBLESTONE_ROAD_CFG = terrain_gen.TerrainGeneratorCfg(
     sub_terrains={
         "flat": terrain_gen.MeshPlaneTerrainCfg(proportion=0.5),
         "slope": terrain_gen.HfPyramidSlopedTerrainCfg(
-            slope_range=(0.0, math.tan(math.radians(7))),
+            slope_range=(0.0, math.tan(math.radians(5))),
             proportion=0.5
         ),
     },

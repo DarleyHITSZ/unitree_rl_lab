@@ -16,6 +16,7 @@ from isaaclab.sensors import ContactSensorCfg, RayCasterCfg, patterns
 from isaaclab.terrains import TerrainImporterCfg
 from isaaclab.utils import configclass
 from isaaclab.utils.assets import ISAAC_NUCLEUS_DIR, ISAACLAB_NUCLEUS_DIR
+from isaaclab.utils.noise import AdditiveUniformNoiseCfg as Unoise
 
 from unitree_rl_lab.assets.robots.unitree import UNITREE_G1_29DOF_CFG as ROBOT_CFG
 from unitree_rl_lab.tasks.locomotion import mdp
@@ -33,7 +34,7 @@ ADAPTIVE_TERRAIN_CFG = terrain_gen.TerrainGeneratorCfg(
     sub_terrains={
         "flat": terrain_gen.MeshPlaneTerrainCfg(proportion=0.5),
         "slope": terrain_gen.HfPyramidSlopedTerrainCfg(
-            slope_range=(0.0, math.tan(math.radians(7))),
+            slope_range=(0.0, math.tan(math.radians(5))),
             proportion=0.5
         ),
     },
@@ -67,7 +68,7 @@ class RobotSceneCfg(InteractiveSceneCfg):
 
     height_scanner = RayCasterCfg(
         prim_path="{ENV_REGEX_NS}/Robot/torso_link",
-        offset=RayCasterCfg.OffsetCfg(pos=(0.0, 0.0, 0.0)),
+        offset=RayCasterCfg.OffsetCfg(pos=(0.0, 0.0, 20.0)),
         ray_alignment="yaw",
         pattern_cfg=patterns.GridPatternCfg(resolution=0.1, size=[1.6, 1.0]),
         debug_vis=False,
@@ -189,20 +190,20 @@ class ObservationsCfg:
     class PolicyCfg(ObsGroup):
         """Observations for policy group."""
 
-        base_ang_vel = ObsTerm(func=mdp.base_ang_vel, scale=0.2)
-        projected_gravity = ObsTerm(func=mdp.projected_gravity)
+        base_ang_vel = ObsTerm(func=mdp.base_ang_vel, scale=0.2, noise=Unoise(n_min=-0.2, n_max=0.2))
+        projected_gravity = ObsTerm(func=mdp.projected_gravity, noise=Unoise(n_min=-0.05, n_max=0.05))
         velocity_commands = ObsTerm(func=mdp.generated_commands, params={"command_name": "base_velocity"})
-        joint_pos_rel = ObsTerm(func=mdp.joint_pos_rel)
-        joint_vel_rel = ObsTerm(func=mdp.joint_vel_rel, scale=0.05)
+        joint_pos_rel = ObsTerm(func=mdp.joint_pos_rel, noise=Unoise(n_min=-0.01, n_max=0.01))
+        joint_vel_rel = ObsTerm(func=mdp.joint_vel_rel, scale=0.05, noise=Unoise(n_min=-1.5, n_max=1.5))
         last_action = ObsTerm(func=mdp.last_action)
         terrain_type = ObsTerm(
             func=mdp.terrain_type_obs_onehot,
-            params={"sensor_cfg": SceneEntityCfg("height_scanner"), "slope_threshold_deg": 5.0, "min_valid_rays": 10},
+            params={"sensor_cfg": SceneEntityCfg("height_scanner"), "slope_threshold_deg": 2.0, "min_valid_rays": 10},
         )
 
         def __post_init__(self):
             self.history_length = 5
-            self.enable_corruption = False
+            self.enable_corruption = True
             self.concatenate_terms = True
 
     policy: PolicyCfg = PolicyCfg()
@@ -220,7 +221,7 @@ class ObservationsCfg:
         last_action = ObsTerm(func=mdp.last_action)
         terrain_type = ObsTerm(
             func=mdp.terrain_type_obs_onehot,
-            params={"sensor_cfg": SceneEntityCfg("height_scanner"), "slope_threshold_deg": 5.0, "min_valid_rays": 10},
+            params={"sensor_cfg": SceneEntityCfg("height_scanner"), "slope_threshold_deg": 2.0, "min_valid_rays": 10},
         )
 
         def __post_init__(self):
@@ -240,7 +241,7 @@ class RewardsCfg:
             "command_name": "base_velocity",
             "std": math.sqrt(0.25),
             "sensor_cfg": SceneEntityCfg("height_scanner"),
-            "slope_threshold_deg": 5.0,
+            "slope_threshold_deg": 2.0,
             "min_valid_rays": 10,
         },
     )
@@ -296,7 +297,7 @@ class RewardsCfg:
         params={
             "asset_cfg": SceneEntityCfg("robot"),
             "sensor_cfg": SceneEntityCfg("height_scanner"),
-            "slope_threshold_deg": 5.0,
+            "slope_threshold_deg": 2.0,
             "min_valid_rays": 10,
         },
     )

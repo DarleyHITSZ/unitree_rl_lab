@@ -73,3 +73,7 @@ datasets
 
 # Mimic
 *.npz
+
+# Scripts
+
+scripts/*.sh

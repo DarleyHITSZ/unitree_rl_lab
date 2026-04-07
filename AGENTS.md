@@ -16,6 +16,10 @@ Guidelines for AI agents working on the Unitree RL Lab codebase - a reinforcemen
 # Manual training with options
 python scripts/rsl_rl/train.py --task Unitree-G1-29dof-Velocity --headless --num_envs 64
 python scripts/rsl_rl/play.py --task Unitree-G1-29dof-Velocity
+
+# SIMBICON controller debug / MSLPO parameter search
+python scripts/mslpo/simbicon_debug.py --num_envs 4 --headless --max_steps 2000
+python scripts/mslpo/qlearn_search.py --episodes 1000 --headless
 ```
 
 ## Build, Lint & Test Commands
@@ -30,10 +34,10 @@ pre-commit run flake8 --files path/to/file.py
 pre-commit run isort --files path/to/file.py
 
 # Individual linters (single file)
-black --line-length 120 --preview source/unitree_rl_lab/unitree_rl_lab/tasks/locomotion/mdp/rewards.py
-flake8 source/unitree_rl_lab/unitree_rl_lab/tasks/locomotion/mdp/rewards.py
-isort --profile black --filter-files source/unitree_rl_lab/unitree_rl_lab/tasks/locomotion/mdp/rewards.py
-pyright source/unitree_rl_lab/unitree_rl_lab/tasks/locomotion/mdp/rewards.py
+black --line-length 120 --preview path/to/file.py
+flake8 path/to/file.py
+isort --profile black --filter-files path/to/file.py
+pyright path/to/file.py
 
 # Type check entire package
 pyright source/unitree_rl_lab/
@@ -45,6 +49,57 @@ pyright source/unitree_rl_lab/
 ```
 
 Pre-commit excludes `deploy/` and `.vscode/`.
+
+## Isaac Sim Runtime Constraints
+
+- All IsaacLab imports (`omni`, `isaaclab`, `isaaclab_tasks`) **require** the Isaac Sim runtime. They must be placed **after** `AppLauncher` in scripts.
+- Scripts must call `AppLauncher(args_cli)` and `simulation_app = app_launcher.app` before any IsaacLab imports.
+- Use `env.unwrapped` to access the `ManagerBasedRLEnv` (the gym wrapper doesn't expose scene/device).
+- Use `env.reset()` on the gym wrapper (not `env.unwrapped.reset()`) to avoid `ResetNeeded` errors.
+- `env.step()` returns 5 values: `(obs, rewards, terminated, truncated, extras)` — all tensors.
+- IsaacLab auto-resets terminated/truncated environments on the next `step()` call.
+- `torch.inference_mode()` tensors cannot be modified inplace outside the context — always `.clone()` before mutation.
+
+## Critical API Notes
+
+### `find_bodies()` returns a tuple, not a list
+```python
+# WRONG - this returns a tuple
+body_ids = robot.find_bodies("pattern")  # -> tuple[list[int], list[str]]
+
+# CORRECT
+body_ids, body_names = robot.find_bodies("pattern")
+foot_id = body_ids[0] if body_ids else -1
+```
+
+### Contact sensor body ordering differs from articulation body ordering
+```python
+# WRONG - articulation body IDs don't match sensor body IDs
+net_forces[:, articulation_body_id, :]
+
+# CORRECT - resolve by name from the sensor's own body list
+sensor_body_names = contact_sensor.body_names
+for i, name in enumerate(sensor_body_names):
+    if "left_ankle_roll" in name:
+        left_foot_sensor_id = i
+```
+
+### `net_forces_w` shape is `(num_envs, num_bodies, 3)` per sensor
+When using `prim_path="{ENV_REGEX_NS}/Robot/.*"` (one sensor, all bodies), index with `[env_idx, body_idx, :]`.
+
+### Python module names starting with digits
+`29dof` is a valid package name but cannot be imported with `from ... import` syntax. Use `importlib.import_module()`:
+```python
+import importlib
+mod = importlib.import_module("unitree_rl_lab.tasks.locomotion.robots.g1.29dof.some_config")
+```
+
+### Use `robot.data.default_joint_pos` for action computation
+Never hardcode default joint positions. Always read from the live articulation:
+```python
+default_pos = robot.data.default_joint_pos  # (num_envs, num_joints)
+action = (target - default_pos) / scale
+```
 
 ## Code Style
 
@@ -122,9 +177,6 @@ def track_lin_vel_xy_adaptive(
 ) -> torch.Tensor:
     """Adaptive linear velocity tracking reward based on terrain type.
 
-    On flat terrain: weight = 1.0
-    On slope terrain: weight = 0.5 (reduced to prioritize stability).
-
     Args:
         env: The environment instance.
         command_name: Name of the velocity command to track.
@@ -190,6 +242,8 @@ Environment configs organize into these @configclass sections:
 ```
 source/unitree_rl_lab/unitree_rl_lab/
 ├── assets/robots/           # Robot configurations (unitree.py, unitree_actuators.py)
+├── controllers/             # Traditional controllers (SIMBICON gait controller)
+│   └── simbicon/            # FSM, PD, balance feedback, G1 joint mapping, param search
 ├── tasks/
 │   ├── locomotion/          # Velocity-tracking environments
 │   │   ├── agents/          # PPO agent configs (rsl_ppo_cfg_*.py)
@@ -200,7 +254,18 @@ source/unitree_rl_lab/unitree_rl_lab/
 
 scripts/
 ├── list_envs.py
-└── rsl_rl/                  # Training scripts (train.py, play.py, cli_args.py)
+├── rsl_rl/                  # Training scripts (train.py, play.py, cli_args.py)
+└── mslpo/                   # MSLPO parameter search (qlearn_search.py, simbicon_debug.py)
+```
+
+## G1-29dof Joint Layout
+
+```
+Indices 0-5:   Left leg  (hip_pitch, hip_roll, hip_yaw, knee, ankle_pitch, ankle_roll)
+Indices 6-11:  Right leg (hip_pitch, hip_roll, hip_yaw, knee, ankle_pitch, ankle_roll)
+Indices 12-14: Waist     (yaw, roll, pitch)
+Indices 15-21: Left arm  (shoulder_pitch/roll/yaw, elbow, wrist_roll/pitch/yaw)
+Indices 22-28: Right arm (shoulder_pitch/roll/yaw, elbow, wrist_roll/pitch/yaw)
 ```
 
 ## Commit Style
@@ -224,3 +289,5 @@ ISAACLAB_PATH=/path/to/IsaacLab             # Isaac Lab installation
 3. **RSL-RL version**: Version 2.3.1+ required for distributed training
 4. **Missing robots**: Set `UNITREE_MODEL_DIR` or `UNITREE_ROS_DIR` in `source/unitree_rl_lab/unitree_rl_lab/assets/robots/unitree.py`
 5. **pre-commit fails**: Run `pip install pre-commit && pre-commit install`
+6. **InferenceMode errors**: Tensors created inside `torch.inference_mode()` cannot be modified inplace outside it. Always `.clone()` before mutation in reset methods.
+7. **Gym wrapper vs unwrapped**: Always call `env.reset()` (not `unwrapped.reset()`) and `env.step()` on the wrapper. Access scene/device via `env.unwrapped`.

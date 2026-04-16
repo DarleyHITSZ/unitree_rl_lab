@@ -340,6 +340,8 @@ class RolloutResult:
         truncated: Whether the episode was truncated (time limit).
         total_reward: Accumulated Q-learning reward.
         step_count: Number of simulation steps completed.
+        time_to_fall: Seconds until termination (alive_time if fell, max_steps*dt if survived).
+        early_window_forward_velocity: Mean forward velocity over the first 50 steps.
         hl: HL parameter used.
         ls: Ls parameter used.
         lswb: Lswb parameter used.
@@ -353,6 +355,8 @@ class RolloutResult:
     truncated: bool = False
     total_reward: float = 0.0
     step_count: int = 0
+    time_to_fall: float = 0.0
+    early_window_forward_velocity: float = 0.0
     hl: int = 0
     ls: int = 0
     lswb: int = 0
@@ -415,6 +419,8 @@ def evaluate_gait_params(
     step_count = 0
     terminated_flag = False
     truncated_flag = False
+    early_vel_sum = 0.0
+    early_window_steps = 50
 
     for _ in range(max_steps):
         with torch.inference_mode():
@@ -442,6 +448,8 @@ def evaluate_gait_params(
         total_reward += r_v + r_y + r_alive
         vel_sum += forward_vel
         lateral_sum += lateral_offset
+        if step_count <= early_window_steps:
+            early_vel_sum += forward_vel
 
         if terminated[0].item():
             base_z = state_data.root_pos[0, 2].item()
@@ -458,6 +466,8 @@ def evaluate_gait_params(
     alive_time = step_count * dt
     avg_vel = vel_sum / max(step_count, 1)
     avg_lateral = lateral_sum / max(step_count, 1)
+    time_to_fall = alive_time if terminated_flag else (max_steps * dt)
+    early_vel = early_vel_sum / min(step_count, early_window_steps)
 
     return RolloutResult(
         avg_forward_velocity=avg_vel,
@@ -467,6 +477,8 @@ def evaluate_gait_params(
         truncated=truncated_flag,
         total_reward=total_reward,
         step_count=step_count,
+        time_to_fall=time_to_fall,
+        early_window_forward_velocity=early_vel,
         hl=hl,
         ls=ls,
         lswb=lswb,
@@ -616,6 +628,8 @@ class SimbiconQLearningSearcher:
                 "avg_forward_velocity": result.avg_forward_velocity,
                 "avg_lateral_offset": result.avg_lateral_offset,
                 "alive_time": result.alive_time,
+                "time_to_fall": result.time_to_fall,
+                "early_window_forward_velocity": result.early_window_forward_velocity,
                 "terminated": result.terminated,
                 "truncated": result.truncated,
                 "success": result.success,
@@ -730,3 +744,606 @@ class SimbiconQLearningSearcher:
         self._episode += 1
 
         return result
+
+
+_DEFAULT_TOP5 = [
+    {"HL": 20, "Ls": 52, "Lswb": 40, "Lforward": 18, "total_reward": 15.34},
+    {"HL": 20, "Ls": 48, "Lswb": 37, "Lforward": 12, "total_reward": 14.90},
+    {"HL": 24, "Ls": 48, "Lswb": 23, "Lforward": 40, "total_reward": 14.37},
+    {"HL": 25, "Ls": 41, "Lswb": 35, "Lforward": 6, "total_reward": 14.03},
+    {"HL": 47, "Ls": 41, "Lswb": 33, "Lforward": 39, "total_reward": 13.96},
+]
+
+_PARAM_NAMES = ("HL", "Ls", "Lswb", "Lforward")
+
+_PARAM_RANGES: dict[str, tuple[int, int]] = {
+    "HL": (20, 60),
+    "Ls": (40, 95),
+    "Lswb": (15, 40),
+    "Lforward": (5, 40),
+}
+
+_PARAM_SCAN_STEPS: dict[str, int] = {
+    "HL": 4,
+    "Ls": 5,
+    "Lswb": 3,
+    "Lforward": 4,
+}
+
+
+def _make_scan_grid(lo: int, hi: int, step: int) -> list[int]:
+    grid = list(range(lo, hi + 1, step))
+    if grid[-1] != hi:
+        grid.append(hi)
+    return sorted(set(grid))
+
+
+def _compute_base_params(top5: list[dict], mode: str) -> dict[str, int]:
+    if mode == "best":
+        best = max(top5, key=lambda d: d.get("total_reward", 0.0))
+        return {p: int(best[p]) for p in _PARAM_NAMES}
+    values_by_param: dict[str, list[int]] = {p: [int(t5[p]) for t5 in top5] for p in _PARAM_NAMES}
+    if mode == "median":
+        return {p: int(sorted(vals)[len(vals) // 2]) for p, vals in values_by_param.items()}
+    return {p: int(round(sum(vals) / len(vals))) for p, vals in values_by_param.items()}
+
+
+@dataclass
+class ParameterSensitivityAnalyzer:
+    """Control-variable sensitivity scanner for one gait parameter at a time.
+
+    For each parameter, all other three are fixed at *base_params* while the
+    target parameter sweeps through a coarse grid.  Every grid point is
+    evaluated with ``num_rollouts`` independent rollouts (fixed seed set) and
+    the results are averaged.
+
+    Attributes:
+        env: The wrapped ManagerBasedRLEnv.
+        controller: The SimbiconController instance.
+        joint_indices: Resolved G1 joint indices.
+        max_steps: Maximum simulation steps per rollout.
+        k_v: Velocity reward coefficient.
+        k_y: Lateral offset penalty coefficient.
+        k_alive: Survival reward coefficient.
+        num_rollouts: Number of rollouts per grid point.
+        seeds: Fixed random seed list for reproducibility.
+        base_param_mode: How to derive base params from top5 ("mean"|"median"|"best").
+        sensitivity_score_metric: Metric key used for ranking best scan point
+            and passed to DynamicDiscretizer ("composite"|"time_to_fall"|"total_reward"|"early_forward_velocity").
+        sensitivity_alpha: Weight for time_to_fall in composite score (1-alpha = weight for early velocity).
+    """
+
+    env: "ManagerBasedRLEnv" = None  # type: ignore[assignment]
+    controller: "SimbiconController" = None  # type: ignore[assignment]
+    joint_indices: "G1JointIndices" = None  # type: ignore[assignment]
+    max_steps: int = 2000
+    k_v: float = 1.0
+    k_y: float = 3.0
+    k_alive: float = 10.0
+    num_rollouts: int = 3
+    seeds: list[int] = field(default_factory=lambda: [42, 43, 44])
+    base_param_mode: str = "median"
+    sensitivity_score_metric: str = "composite"
+    sensitivity_alpha: float = 0.6
+
+    def _base_params(self) -> dict[str, int]:
+        return _compute_base_params(_DEFAULT_TOP5, self.base_param_mode)
+
+    def _compute_composite_and_inject(self, results: list[dict]) -> None:
+        ttf_vals = [r["mean_time_to_fall"] for r in results]
+        ev_vals = [r["mean_early_window_forward_velocity"] for r in results]
+        ttf_min, ttf_max = min(ttf_vals), max(ttf_vals)
+        ev_min, ev_max = min(ev_vals), max(ev_vals)
+        ttf_range = max(ttf_max - ttf_min, 1e-9)
+        ev_range = max(ev_max - ev_min, 1e-9)
+        for i, r in enumerate(results):
+            ttf_n = (ttf_vals[i] - ttf_min) / ttf_range
+            ev_n = (ev_vals[i] - ev_min) / ev_range
+            r["composite_score"] = round(self.sensitivity_alpha * ttf_n + (1 - self.sensitivity_alpha) * ev_n, 6)
+
+    def scan_parameter(
+        self,
+        param_name: str,
+        candidate_values: list[int],
+        base_params: dict[str, int],
+    ) -> list[dict]:
+        results: list[dict] = []
+        for val in candidate_values:
+            params = dict(base_params)
+            params[param_name] = val
+            rewards = []
+            vels = []
+            laterals = []
+            alives = []
+            ttf_list = []
+            ev_list = []
+            falls = 0
+            for _ in range(self.num_rollouts):
+                r = evaluate_gait_params(
+                    self.env,
+                    self.controller,
+                    self.joint_indices,
+                    (params["HL"], params["Ls"], params["Lswb"], params["Lforward"]),
+                    self.max_steps,
+                    k_v=self.k_v,
+                    k_y=self.k_y,
+                    k_alive=self.k_alive,
+                )
+                rewards.append(r.total_reward)
+                vels.append(r.avg_forward_velocity)
+                laterals.append(r.avg_lateral_offset)
+                alives.append(r.alive_time)
+                ttf_list.append(r.time_to_fall)
+                ev_list.append(r.early_window_forward_velocity)
+                if r.terminated:
+                    falls += 1
+            results.append(
+                {
+                    "param_name": param_name,
+                    "param_value": val,
+                    "mean_total_reward": round(sum(rewards) / len(rewards), 6),
+                    "mean_forward_velocity": round(sum(vels) / len(vels), 6),
+                    "mean_lateral_offset": round(sum(laterals) / len(laterals), 6),
+                    "mean_alive_time": round(sum(alives) / len(alives), 4),
+                    "mean_time_to_fall": round(sum(ttf_list) / len(ttf_list), 4),
+                    "mean_early_window_forward_velocity": round(sum(ev_list) / len(ev_list), 6),
+                    "fall_rate": round(falls / self.num_rollouts, 4),
+                }
+            )
+        return results
+
+    def _metric_key(self) -> str:
+        mapping = {
+            "composite": "composite_score",
+            "time_to_fall": "mean_time_to_fall",
+            "total_reward": "mean_total_reward",
+            "early_forward_velocity": "mean_early_window_forward_velocity",
+        }
+        return mapping.get(self.sensitivity_score_metric, "composite_score")
+
+    def scan_all_parameters(self) -> dict[str, list[dict]]:
+        base = self._base_params()
+        metric_key = self._metric_key()
+        all_results: dict[str, list[dict]] = {}
+        for pname in _PARAM_NAMES:
+            lo, hi = _PARAM_RANGES[pname]
+            step = _PARAM_SCAN_STEPS[pname]
+            grid = _make_scan_grid(lo, hi, step)
+            print(f"[SCAN] {pname}: sweeping {len(grid)} values in [{lo}, {hi}], base={base}")
+            results = self.scan_parameter(pname, grid, base)
+            if self.sensitivity_score_metric == "composite":
+                self._compute_composite_and_inject(results)
+            all_results[pname] = results
+            best = max(results, key=lambda d: d[metric_key])
+            print(
+                f"[SCAN] {pname}: best_value={best['param_value']} "
+                f"{metric_key}={best[metric_key]:+.4f} "
+                f"reward={best['mean_total_reward']:+.4f} "
+                f"ttf={best['mean_time_to_fall']:.4f}s "
+                f"fall_rate={best['fall_rate']:.2f}"
+            )
+        return all_results
+
+    def save_results(self, results: dict[str, list[dict]], path: str) -> None:
+        os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+        with open(path, "w") as f:
+            json.dump(results, f, indent=2)
+        total_points = sum(len(v) for v in results.values())
+        print(f"[SCAN] Saved {total_points} scan points to {path}")
+
+
+@dataclass
+class DynamicDiscretizer:
+    """Builds non-uniform discrete value lists by focusing on high-value zones.
+
+    A composite score S = alpha * norm(time_to_fall) + (1-alpha) * norm(early_velocity)
+    is computed per scan point, smoothed, then the top 30% (score >= p70) are
+    identified as high-value points.  These are merged into contiguous "focus zones"
+    and expanded by one scan step.  Inside focus zones every integer value is kept
+    (step 1); outside, only the original coarse scan grid points and endpoints are
+    retained.  This concentrates the action space density where the robot performs
+    best rather than where the sensitivity gradient happens to be steep.
+
+    Attributes:
+        metric: Scan result key for performance signal ("composite_score" or others).
+        sensitivity_alpha: Weight for time_to_fall in composite score.
+        high_value_pct: Percentile threshold for high-value zone identification.
+        focus_step: Step size inside high-value zones.
+        smooth_window: Width of the moving-average smoother.
+    """
+
+    metric: str = "composite_score"
+    sensitivity_alpha: float = 0.6
+    high_value_pct: float = 70.0
+    focus_step: int = 1
+    smooth_window: int = 3
+
+    def _smooth(self, values: list[float]) -> list[float]:
+        if len(values) < 3:
+            return list(values)
+        half = self.smooth_window // 2
+        out = list(values)
+        for i in range(half, len(values) - half):
+            out[i] = sum(values[i - half : i + half + 1]) / (2 * half + 1)
+        return out
+
+    def _get_score_series(self, scan_results: list[dict]) -> list[float]:
+        if self.metric == "composite_score":
+            ttf_vals = [r["mean_time_to_fall"] for r in scan_results]
+            ev_vals = [r["mean_early_window_forward_velocity"] for r in scan_results]
+            ttf_min, ttf_max = min(ttf_vals), max(ttf_vals)
+            ev_min, ev_max = min(ev_vals), max(ev_vals)
+            ttf_range = max(ttf_max - ttf_min, 1e-9)
+            ev_range = max(ev_max - ev_min, 1e-9)
+            raw = [
+                self.sensitivity_alpha * (ttf_vals[i] - ttf_min) / ttf_range
+                + (1 - self.sensitivity_alpha) * (ev_vals[i] - ev_min) / ev_range
+                for i in range(len(ttf_vals))
+            ]
+        else:
+            raw = [r.get(self.metric, 0.0) for r in scan_results]
+        return self._smooth(raw)
+
+    def compute_sensitivity_scores(self, scan_results: list[dict], param_name: str) -> list[dict]:
+        x = [r["param_value"] for r in scan_results]
+        s = self._get_score_series(scan_results)
+        scores: list[dict] = []
+        for i in range(len(x) - 1):
+            dx = x[i + 1] - x[i]
+            if dx == 0:
+                continue
+            g = abs(s[i + 1] - s[i]) / dx
+            scores.append(
+                {
+                    "param_name": param_name,
+                    "range_start": x[i],
+                    "range_end": x[i + 1],
+                    "sensitivity_score": round(g, 6),
+                    "smoothed_value_start": round(s[i], 6),
+                    "smoothed_value_end": round(s[i + 1], 6),
+                }
+            )
+        return scores
+
+    def _find_high_value_zones(self, scan_results: list[dict], param_name: str) -> list[tuple[int, int]]:
+        s = self._get_score_series(scan_results)
+        x = [r["param_value"] for r in scan_results]
+        sorted_s = sorted(s)
+        p70 = sorted_s[min(len(sorted_s) - 1, int(len(sorted_s) * self.high_value_pct / 100))]
+        high_points = [x[i] for i in range(len(x)) if s[i] >= p70]
+        if not high_points:
+            return []
+        scan_step = _PARAM_SCAN_STEPS[param_name]
+        lo_param, hi_param = _PARAM_RANGES[param_name]
+        intervals: list[tuple[int, int]] = []
+        cur_start = high_points[0]
+        cur_end = high_points[0]
+        for px in high_points[1:]:
+            if px - cur_end <= scan_step * 1.5:
+                cur_end = px
+            else:
+                intervals.append((cur_start, cur_end))
+                cur_start = px
+                cur_end = px
+        intervals.append((cur_start, cur_end))
+        expanded = [(max(cs - scan_step, lo_param), min(ce + scan_step, hi_param)) for cs, ce in intervals]
+        merged = [expanded[0]]
+        for iv in expanded[1:]:
+            if iv[0] <= merged[-1][1]:
+                merged[-1] = (merged[-1][0], max(merged[-1][1], iv[1]))
+            else:
+                merged.append(iv)
+        return merged
+
+    def build_value_list(self, scan_results: list[dict], param_name: str) -> list[int]:
+        lo, hi = _PARAM_RANGES[param_name]
+        scan_step = _PARAM_SCAN_STEPS[param_name]
+        scan_grid = set(_make_scan_grid(lo, hi, scan_step))
+        focus_zones = self._find_high_value_zones(scan_results, param_name)
+        values: set[int] = set()
+        if focus_zones:
+            for f_lo, f_hi in focus_zones:
+                values.update(range(int(f_lo), int(f_hi) + 1))
+        for v in scan_grid:
+            values.add(v)
+        values.add(lo)
+        values.add(hi)
+        result = sorted(v for v in values if lo <= v <= hi)
+        return result
+
+    def build_all(self, scan_results_by_param: dict[str, list[dict]]) -> dict[str, list[int]]:
+        result: dict[str, list[int]] = {}
+        for pname in _PARAM_NAMES:
+            vals = self.build_value_list(scan_results_by_param[pname], pname)
+            result[pname] = vals
+            zones = self._find_high_value_zones(scan_results_by_param[pname], pname)
+            zone_str = ", ".join(f"[{z[0]},{z[1]}]" for z in zones) if zones else "none"
+            print(f"[DISC] {pname}: {len(vals)} values, focus zones: {zone_str}")
+        return result
+
+    def save_config(self, value_lists: dict[str, list[int]], scan_results_by_param: dict, path: str) -> None:
+        config: dict = {
+            "sensitivity_score_mode": self.metric,
+            "sensitivity_alpha": self.sensitivity_alpha,
+            "parameters": {},
+        }
+        for pname in _PARAM_NAMES:
+            zones = self._find_high_value_zones(scan_results_by_param[pname], pname)
+            scores = self.compute_sensitivity_scores(scan_results_by_param[pname], pname)
+            config["parameters"][pname] = {
+                "original_range": list(_PARAM_RANGES[pname]),
+                "focus_zones": [list(z) for z in zones],
+                "smoothed_sensitivity_scores": [
+                    {
+                        "range": [s["range_start"], s["range_end"]],
+                        "score": s["sensitivity_score"],
+                        "smoothed_start": s["smoothed_value_start"],
+                        "smoothed_end": s["smoothed_value_end"],
+                    }
+                    for s in scores
+                ],
+                "discrete_values": value_lists[pname],
+                "num_values": len(value_lists[pname]),
+            }
+        os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+        with open(path, "w") as f:
+            json.dump(config, f, indent=2)
+        print(f"[DISC] Saved discretization config to {path}")
+
+
+@dataclass
+class DynamicParameterSpace:
+    """Non-uniform discrete parameter space with the same public API as GaitParameterSpace.
+
+    The four value lists are sorted and deduplicated at construction time.
+    Pre-computed index lookups and strides enable O(1) encoding / decoding
+    of parameter tuples to / from flat action indices.
+    """
+
+    hl_values: list[int] = field(default_factory=list)
+    ls_values: list[int] = field(default_factory=list)
+    lswb_values: list[int] = field(default_factory=list)
+    lforward_values: list[int] = field(default_factory=list)
+
+    _hl_idx: dict[int, int] = field(default_factory=dict, repr=False)
+    _ls_idx: dict[int, int] = field(default_factory=dict, repr=False)
+    _lswb_idx: dict[int, int] = field(default_factory=dict, repr=False)
+    _lforward_idx: dict[int, int] = field(default_factory=dict, repr=False)
+    _hl_stride: int = 0
+    _ls_stride: int = 0
+    _lswb_stride: int = 0
+
+    def __post_init__(self) -> None:
+        self.hl_values = sorted(set(self.hl_values))
+        self.ls_values = sorted(set(self.ls_values))
+        self.lswb_values = sorted(set(self.lswb_values))
+        self.lforward_values = sorted(set(self.lforward_values))
+        self._hl_idx = {v: i for i, v in enumerate(self.hl_values)}
+        self._ls_idx = {v: i for i, v in enumerate(self.ls_values)}
+        self._lswb_idx = {v: i for i, v in enumerate(self.lswb_values)}
+        self._lforward_idx = {v: i for i, v in enumerate(self.lforward_values)}
+        self._lswb_stride = len(self.lforward_values)
+        self._ls_stride = len(self.lswb_values) * self._lswb_stride
+        self._hl_stride = len(self.ls_values) * self._ls_stride
+
+    @property
+    def total_actions(self) -> int:
+        return len(self.hl_values) * len(self.ls_values) * len(self.lswb_values) * len(self.lforward_values)
+
+    def params_to_action_idx(self, hl: int, ls: int, lswb: int, lforward: int) -> int:
+        return (
+            self._hl_idx[hl] * self._hl_stride
+            + self._ls_idx[ls] * self._ls_stride
+            + self._lswb_idx[lswb] * self._lswb_stride
+            + self._lforward_idx[lforward]
+        )
+
+    def action_idx_to_params(self, action_idx: int) -> tuple[int, int, int, int]:
+        hl_i = action_idx // self._hl_stride
+        rem = action_idx % self._hl_stride
+        ls_i = rem // self._ls_stride
+        rem2 = rem % self._ls_stride
+        lswb_i = rem2 // self._lswb_stride
+        lf_i = rem2 % self._lswb_stride
+        return (self.hl_values[hl_i], self.ls_values[ls_i], self.lswb_values[lswb_i], self.lforward_values[lf_i])
+
+    def random_params(self) -> tuple[int, int, int, int]:
+        return (
+            random.choice(self.hl_values),
+            random.choice(self.ls_values),
+            random.choice(self.lswb_values),
+            random.choice(self.lforward_values),
+        )
+
+
+def compute_convergence_episode(
+    episode_log: list[dict],
+    window: int = 20,
+    threshold: float = 0.05,
+) -> int | None:
+    """Compute the episode at which training converged.
+
+    Convergence is defined as the first episode where the coefficient of
+    variation (std / |mean|) of *total_reward* over a sliding window of
+    ``window`` consecutive episodes falls below ``threshold``.
+
+    Args:
+        episode_log: List of per-episode dicts, each containing "total_reward".
+        window: Sliding window size in episodes.
+        threshold: Maximum coefficient of variation to declare convergence.
+
+    Returns:
+        1-indexed episode number at convergence, or None if never converged.
+    """
+    rewards = [ep["total_reward"] for ep in episode_log]
+    for i in range(window, len(rewards) + 1):
+        w = rewards[i - window : i]
+        mean_r = sum(w) / window
+        if mean_r == 0:
+            continue
+        var_r = sum((r - mean_r) ** 2 for r in w) / window
+        cv = (var_r**0.5) / abs(mean_r)
+        if cv < threshold:
+            return i
+    return None
+
+
+def _best_from_log(episode_log: list[dict]) -> dict:
+    return max(episode_log, key=lambda ep: ep["total_reward"])
+
+
+def compute_episodes_to_target(
+    episode_log: list[dict],
+    metric_key: str = "total_reward",
+    threshold: float = 15.0,
+) -> int | None:
+    """Find the first episode whose running-best *metric_key* meets or exceeds *threshold*.
+
+    Args:
+        episode_log: List of per-episode dicts.
+        metric_key: Key to check (e.g. "total_reward", "avg_forward_velocity").
+        threshold: Target value to reach.
+
+    Returns:
+        1-indexed episode number at which the running best first meets the
+        threshold, or None if never reached.
+    """
+    best_so_far = float("-inf")
+    for i, ep in enumerate(episode_log):
+        val = ep.get(metric_key, float("-inf"))
+        if isinstance(val, (int, float)) and val > best_so_far:
+            best_so_far = val
+        if best_so_far >= threshold:
+            return i + 1
+    return None
+
+
+def _assess_dynamic_search(report: dict) -> str:
+    d_target_r = report.get("dynamic_episodes_to_target_reward")
+    u_target_r = report.get("uniform_episodes_to_target_reward")
+    d_target_v = report.get("dynamic_episodes_to_target_velocity")
+    u_target_v = report.get("uniform_episodes_to_target_velocity")
+
+    d_hit_any = d_target_r is not None or d_target_v is not None
+    u_hit_any = u_target_r is not None or u_target_v is not None
+
+    if not d_hit_any and not u_hit_any:
+        return "inconclusive_due_to_no_target_hit"
+
+    d_faster = False
+    if d_target_r is not None and u_target_r is not None and d_target_r <= u_target_r:
+        d_faster = True
+    if d_target_v is not None and u_target_v is not None and d_target_v <= u_target_v:
+        d_faster = True
+
+    if d_faster:
+        return "space_reduced_and_target_reached_faster"
+
+    d_reward = report.get("dynamic_best_total_reward", 0.0)
+    u_reward = report.get("uniform_best_total_reward", 0.0)
+    if u_reward != 0 and (d_reward - u_reward) / abs(u_reward) > 0.01:
+        return "space_reduced_with_better_best_performance"
+
+    return "space_reduced_but_no_efficiency_gain"
+
+
+def compare_uniform_vs_dynamic(
+    uniform_episode_log: list[dict],
+    dynamic_episode_log: list[dict],
+    uniform_search_time: float,
+    dynamic_search_time: float,
+    scan_time: float,
+    uniform_space_size: int,
+    dynamic_space_size: int,
+    dynamic_space_size_before_tightening: int = 342144,
+    target_reward_threshold: float = 15.0,
+    target_forward_velocity_threshold: float = 0.33,
+) -> dict:
+    """Compare uniform vs dynamic discretisation and return a report dict.
+
+    Args:
+        uniform_episode_log: Per-episode log from the uniform-space run.
+        dynamic_episode_log: Per-episode log from the dynamic-space run.
+        uniform_search_time: Wall-clock seconds for uniform search only.
+        dynamic_search_time: Wall-clock seconds for dynamic search only.
+        scan_time: Wall-clock seconds for the sensitivity scan (Phase A).
+        uniform_space_size: Total actions in the uniform space.
+        dynamic_space_size: Total actions in the dynamic space (after tightening).
+        dynamic_space_size_before_tightening: Total actions before step tightening.
+        target_reward_threshold: Reward value for episodes_to_target computation.
+        target_forward_velocity_threshold: Velocity value for episodes_to_target.
+
+    Returns:
+        Dict with all comparison metrics.
+    """
+    u_best = _best_from_log(uniform_episode_log) if uniform_episode_log else {}
+    d_best = _best_from_log(dynamic_episode_log) if dynamic_episode_log else {}
+    u_conv = compute_convergence_episode(uniform_episode_log)
+    d_conv = compute_convergence_episode(dynamic_episode_log)
+    u_rewards = [ep["total_reward"] for ep in uniform_episode_log]
+    d_rewards = [ep["total_reward"] for ep in dynamic_episode_log]
+    u_successes = sum(1 for ep in uniform_episode_log if ep.get("success", False))
+    d_successes = sum(1 for ep in dynamic_episode_log if ep.get("success", False))
+    reduction = (1.0 - dynamic_space_size / uniform_space_size) * 100 if uniform_space_size > 0 else 0.0
+    u_best_reward = max(u_rewards) if u_rewards else 0.0
+    d_best_reward = max(d_rewards) if d_rewards else 0.0
+    improvement = ((d_best_reward - u_best_reward) / abs(u_best_reward) * 100) if u_best_reward != 0 else 0.0
+
+    report = {
+        "uniform_action_space_size": uniform_space_size,
+        "dynamic_action_space_size_before_tightening": dynamic_space_size_before_tightening,
+        "dynamic_action_space_size_after_tightening": dynamic_space_size,
+        "action_space_reduction_percent": round(reduction, 2),
+        "uniform_convergence_episodes": u_conv,
+        "dynamic_convergence_episodes": d_conv,
+        "uniform_search_time_only": round(uniform_search_time, 2),
+        "dynamic_search_time_only": round(dynamic_search_time, 2),
+        "total_time_including_scan": round(dynamic_search_time + scan_time, 2),
+        "uniform_best_total_reward": round(u_best.get("total_reward", 0.0), 4),
+        "dynamic_best_total_reward": round(d_best.get("total_reward", 0.0), 4),
+        "uniform_best_forward_velocity": round(u_best.get("avg_forward_velocity", 0.0), 6),
+        "dynamic_best_forward_velocity": round(d_best.get("avg_forward_velocity", 0.0), 6),
+        "uniform_best_lateral_offset": round(u_best.get("avg_lateral_offset", 0.0), 6),
+        "dynamic_best_lateral_offset": round(d_best.get("avg_lateral_offset", 0.0), 6),
+        "uniform_best_time_to_fall": round(u_best.get("time_to_fall", 0.0), 4),
+        "dynamic_best_time_to_fall": round(d_best.get("time_to_fall", 0.0), 4),
+        "uniform_best_early_forward_velocity": round(u_best.get("early_window_forward_velocity", 0.0), 6),
+        "dynamic_best_early_forward_velocity": round(d_best.get("early_window_forward_velocity", 0.0), 6),
+        "uniform_success_rate": round(u_successes / max(len(uniform_episode_log), 1), 4),
+        "dynamic_success_rate": round(d_successes / max(len(dynamic_episode_log), 1), 4),
+        "uniform_best_params": {
+            "HL": u_best.get("hl"),
+            "Ls": u_best.get("ls"),
+            "Lswb": u_best.get("lswb"),
+            "Lforward": u_best.get("lforward"),
+        },
+        "dynamic_best_params": {
+            "HL": d_best.get("hl"),
+            "Ls": d_best.get("ls"),
+            "Lswb": d_best.get("lswb"),
+            "Lforward": d_best.get("lforward"),
+        },
+        "target_reward_threshold": target_reward_threshold,
+        "target_forward_velocity_threshold": target_forward_velocity_threshold,
+        "uniform_episodes_to_target_reward": compute_episodes_to_target(
+            uniform_episode_log, "total_reward", target_reward_threshold
+        ),
+        "dynamic_episodes_to_target_reward": compute_episodes_to_target(
+            dynamic_episode_log, "total_reward", target_reward_threshold
+        ),
+        "uniform_episodes_to_target_velocity": compute_episodes_to_target(
+            uniform_episode_log, "avg_forward_velocity", target_forward_velocity_threshold
+        ),
+        "dynamic_episodes_to_target_velocity": compute_episodes_to_target(
+            dynamic_episode_log, "avg_forward_velocity", target_forward_velocity_threshold
+        ),
+        "efficiency_improvement_percent": round(improvement, 2),
+        "convergence_criteria": {
+            "window": 20,
+            "metric": "coefficient_of_variation",
+            "threshold": 0.05,
+            "description": "CV of total_reward over sliding 20-episode window < 5%",
+        },
+    }
+    report["dynamic_search_assessment"] = _assess_dynamic_search(report)
+    return report

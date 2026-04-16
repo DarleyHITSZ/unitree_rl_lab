@@ -25,7 +25,7 @@ import torch
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any
 
-from .g1_joint_map import ABSTRACT_JOINT_NAMES, G1JointIndices
+from .g1_joint_map import ABSTRACT_JOINT_NAMES, NUM_CONTROLLABLE_JOINTS, G1JointIndices
 from .simbicon_balance import BalanceFeedbackController
 from .simbicon_cfg import SimbiconCfg
 from .simbicon_fsm import STATE_NAMES, SimbiconFSM, SimbiconState
@@ -403,6 +403,43 @@ class SimbiconController:
             lforward: Forward distance parameter (integer in [5, 40]).
         """
         self.fsm.update_pose_from_params(hl=hl, ls=ls, lswb=lswb, lforward=lforward)
+
+    def sample_pose_from_state_phase(
+        self,
+        state_name: str,
+        phase: float,
+    ) -> torch.Tensor:
+        """Return a (29,) target joint pose for the given FSM state and phase.
+
+        Static pose generation — no simulation rollout required. Interpolates
+        between the state's start/end poses at the given phase and fills
+        non-controllable joints (waist, arms) with their default positions.
+
+        Args:
+            state_name: FSM state name (e.g. "STEP_RIGHT_WITH_LEFT_FRONT").
+            phase: Interpolation phase in [0, 1]. 0=start pose, 1=end pose.
+
+        Returns:
+            Full 29-DOF target joint position vector, shape (29,).
+
+        Raises:
+            ValueError: If state_name is not a valid FSM state.
+        """
+        state_map = {name: s for s, name in STATE_NAMES.items()}
+        if state_name not in state_map:
+            raise ValueError(f"Unknown FSM state '{state_name}'. " f"Valid states: {list(state_map.keys())}")
+        state_enum = state_map[state_name]
+        pose_def = self.fsm.pose_defs[state_enum]
+
+        controllable = torch.zeros(NUM_CONTROLLABLE_JOINTS, dtype=torch.float32)
+        for j, abstract_name in enumerate(ABSTRACT_JOINT_NAMES):
+            start_val = pose_def.start_pose.get(abstract_name, 0.0)
+            end_val = pose_def.end_pose.get(abstract_name, 0.0)
+            controllable[j] = start_val + phase * (end_val - start_val)
+
+        controllable_2d = controllable.unsqueeze(0)
+        full = self._build_full_targets(controllable_2d)
+        return full.squeeze(0)
 
     def _build_full_targets(self, controllable_targets: torch.Tensor) -> torch.Tensor:
         """Expand 12-DOF controllable targets to full 29-DOF targets.

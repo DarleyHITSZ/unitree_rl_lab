@@ -5,10 +5,10 @@ Lforward) on the G1-29dof robot. Outputs top-5 parameter sets, Q-table
 checkpoint, and per-episode log.
 
 Usage:
-    python scripts/qlearn_search.py --task Unitree-G1-29dof-Simbicon-Debug \
+    python scripts/mslpo/qlearn_search.py --task Unitree-G1-29dof-Simbicon-Debug \
         --num_envs 1 --max_steps 2000 --episodes 500 --headless
 
-    python scripts/qlearn_search.py --task Unitree-G1-29dof-Simbicon-Debug \
+    python scripts/mlspo/qlearn_search.py --task Unitree-G1-29dof-Simbicon-Debug \
         --num_envs 1 --max_steps 2000 --episodes 100 --output_dir outputs/my_run
 """
 

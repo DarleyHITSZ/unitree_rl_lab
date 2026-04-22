@@ -50,3 +50,13 @@ gym.register(
         "rsl_rl_cfg_entry_point": f"unitree_rl_lab.tasks.locomotion.agents.rsl_rl_ppo_cfg:BasePPORunnerCfg",
     },
 )
+gym.register(
+    id="Unitree-G1-29dof-Stage2-PPO",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": f"{__name__}.stage2_ppo_env_cfg:Stage2EnvCfg",
+        "play_env_cfg_entry_point": f"{__name__}.stage2_ppo_env_cfg:Stage2PlayEnvCfg",
+        "rsl_rl_cfg_entry_point": f"unitree_rl_lab.tasks.locomotion.agents.rsl_rl_ppo_cfg:BasePPORunnerCfg",
+    },
+)

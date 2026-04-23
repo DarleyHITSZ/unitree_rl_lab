@@ -1,0 +1,126 @@
+{
+  "per_channel_stats": {
+    "lfemur_rx": {
+      "global_min": -0.9808209344140014,
+      "global_max": 0.5378685875626045,
+      "global_range": 1.518689521976606,
+      "global_std": 0.4040449964384444,
+      "avg_periodicity": -0.7588884800897321
+    },
+    "lfemur_ry": {
+      "global_min": -0.11851518659327336,
+      "global_max": 0.313031782662191,
+      "global_range": 0.4315469692554644,
+      "global_std": 0.07066482548294026,
+      "avg_periodicity": -0.026848299327460478
+    },
+    "lfemur_rz": {
+      "global_min": -0.5595333595676102,
+      "global_max": -0.053291359781619266,
+      "global_range": 0.5062419997859909,
+      "global_std": 0.11866667698845013,
+      "avg_periodicity": -0.7945705842463714
+    },
+    "ltibia_rx": {
+      "global_min": -2.053920917039447e-15,
+      "global_max": 1.2847839862828299,
+      "global_range": 1.2847839862828319,
+      "global_std": 0.3635014842247848,
+      "avg_periodicity": -0.035659447892309876
+    },
+    "lfoot_rx": {
+      "global_min": -0.38784532104892794,
+      "global_max": 0.3943466725126068,
+      "global_range": 0.7821919935615347,
+      "global_std": 0.13279381939198612,
+      "avg_periodicity": 0.34696063291891305
+    },
+    "lfoot_rz": {
+      "global_min": -0.20128358664475005,
+      "global_max": 0.5731940516229698,
+      "global_range": 0.7744776382677199,
+      "global_std": 0.10797219831700995,
+      "avg_periodicity": -0.23278159002865983
+    },
+    "ltoes_rx": {
+      "global_min": -0.5806989674065454,
+      "global_max": 0.6426494292060841,
+      "global_range": 1.2233483966126295,
+      "global_std": 0.12100765549695836,
+      "avg_periodicity": -0.34025265642714103
+    },
+    "rfemur_rx": {
+      "global_min": -0.9757629702417218,
+      "global_max": 0.48400772684605947,
+      "global_range": 1.4597706970877813,
+      "global_std": 0.3795948064795176,
+      "avg_periodicity": -0.8636592598128426
+    },
+    "rfemur_ry": {
+      "global_min": -0.1592235951326395,
+      "global_max": 0.36776356267548116,
+      "global_range": 0.5269871578081207,
+      "global_std": 0.08089193025928301,
+      "avg_periodicity": -0.12063536213777866
+    },
+    "rfemur_rz": {
+      "global_min": -0.10075646145423105,
+      "global_max": 0.6207944163126111,
+      "global_range": 0.7215508777668421,
+      "global_std": 0.1356434104178743,
+      "avg_periodicity": -0.7093498881799456
+    },
+    "rtibia_rx": {
+      "global_min": -2.2759617044781655e-15,
+      "global_max": 1.3142905226170458,
+      "global_range": 1.314290522617048,
+      "global_std": 0.3515304923853627,
+      "avg_periodicity": -0.1852990471469873
+    },
+    "rfoot_rx": {
+      "global_min": -0.5793742625042817,
+      "global_max": 0.383202745238623,
+      "global_range": 0.9625770077429048,
+      "global_std": 0.18975999254816478,
+      "avg_periodicity": -0.15193164605005735
+    },
+    "rfoot_rz": {
+      "global_min": -0.3748548354263341,
+      "global_max": 0.2663005919400428,
+      "global_range": 0.6411554273663769,
+      "global_std": 0.12812730492542818,
+      "avg_periodicity": -0.7123338112428412
+    },
+    "rtoes_rx": {
+      "global_min": -0.9692022775834751,
+      "global_max": 0.18135192658697483,
+      "global_range": 1.15055420417045,
+      "global_std": 0.09352522796298003,
+      "avg_periodicity": 0.3868963338870955
+    }
+  },
+  "recommended_sagittal": {
+    "lfemur": "lfemur_rx",
+    "rfemur": "rfemur_rx",
+    "ltibia": "ltibia_rx",
+    "rtibia": "rtibia_rx",
+    "lfoot": "lfoot_rx",
+    "rfoot": "rfoot_rx"
+  },
+  "hip_knee_correlation": {
+    "left_hip_knee_lag0": -0.46740842654145576,
+    "right_hip_knee_lag0": -0.5213205587050589
+  },
+  "current_mapping": {
+    "left_hip_pitch": "lfemur_rx",
+    "left_knee": "ltibia_rx",
+    "left_ankle_pitch": "lfoot_rx",
+    "right_hip_pitch": "rfemur_rx",
+    "right_knee": "rtibia_rx",
+    "right_ankle_pitch": "rfoot_rx",
+    "left_hip_roll": "lfemur_rz",
+    "right_hip_roll": "rfemur_rz",
+    "left_hip_yaw": "lfemur_ry",
+    "right_hip_yaw": "rfemur_ry"
+  }
+}

@@ -1,0 +1,709 @@
+{
+  "stats": {
+    "mean": 1.370059,
+    "min": 0.759609,
+    "max": 2.066558,
+    "std": 0.329637,
+    "percentiles": {
+      "p5": 0.879912,
+      "p10": 0.92688,
+      "p25": 1.097842,
+      "p50": 1.318786,
+      "p75": 1.655384,
+      "p90": 1.827192,
+      "p95": 1.895005
+    }
+  },
+  "sample_comparisons": [
+    {
+      "human_idx": 31,
+      "human_meta": {
+        "source_npz": "07_03.npz",
+        "phase_index": 1,
+        "cycle_id": 0,
+        "support_foot": "right"
+      },
+      "nearest_stage1_idx": 144,
+      "stage1_meta": {
+        "param_group_idx": 4,
+        "fsm_state": "STEP_LEFT_WITH_RIGHT_FRONT",
+        "phase_index": 0,
+        "support_foot": "right"
+      },
+      "distance": 0.759609,
+      "key_joint_comparison": {
+        "L_hip_pitch": {
+          "human": -0.6269,
+          "stage1": -0.4036,
+          "diff": -0.2233
+        },
+        "L_hip_roll": {
+          "human": -0.2579,
+          "stage1": -0.0588,
+          "diff": -0.1991
+        },
+        "L_knee": {
+          "human": 0.5037,
+          "stage1": 0.292,
+          "diff": 0.2117
+        },
+        "L_ankle_pitch": {
+          "human": -0.1568,
+          "stage1": -0.05,
+          "diff": -0.1068
+        },
+        "R_hip_pitch": {
+          "human": 0.0889,
+          "stage1": -0.1518,
+          "diff": 0.2407
+        },
+        "R_hip_roll": {
+          "human": 0.5745,
+          "stage1": 0.0588,
+          "diff": 0.5157
+        },
+        "R_knee": {
+          "human": 0.2873,
+          "stage1": 0.2,
+          "diff": 0.0873
+        },
+        "R_ankle_pitch": {
+          "human": -0.1965,
+          "stage1": -0.1,
+          "diff": -0.0965
+        }
+      },
+      "key_joint_abs_diff": {
+        "L_hip_pitch": 0.2233,
+        "L_hip_roll": 0.1991,
+        "L_knee": 0.2117,
+        "L_ankle_pitch": 0.1068,
+        "R_hip_pitch": 0.2407,
+        "R_hip_roll": 0.5157,
+        "R_knee": 0.0873,
+        "R_ankle_pitch": 0.0965
+      }
+    },
+    {
+      "human_idx": 45,
+      "human_meta": {
+        "source_npz": "07_03.npz",
+        "phase_index": 1,
+        "cycle_id": 1,
+        "support_foot": "right"
+      },
+      "nearest_stage1_idx": 144,
+      "stage1_meta": {
+        "param_group_idx": 4,
+        "fsm_state": "STEP_LEFT_WITH_RIGHT_FRONT",
+        "phase_index": 0,
+        "support_foot": "right"
+      },
+      "distance": 0.777969,
+      "key_joint_comparison": {
+        "L_hip_pitch": {
+          "human": -0.6304,
+          "stage1": -0.4036,
+          "diff": -0.2268
+        },
+        "L_hip_roll": {
+          "human": -0.1715,
+          "stage1": -0.0588,
+          "diff": -0.1127
+        },
+        "L_knee": {
+          "human": 0.4478,
+          "stage1": 0.292,
+          "diff": 0.1558
+        },
+        "L_ankle_pitch": {
+          "human": -0.1692,
+          "stage1": -0.05,
+          "diff": -0.1192
+        },
+        "R_hip_pitch": {
+          "human": 0.2036,
+          "stage1": -0.1518,
+          "diff": 0.3555
+        },
+        "R_hip_roll": {
+          "human": 0.5553,
+          "stage1": 0.0588,
+          "diff": 0.4965
+        },
+        "R_knee": {
+          "human": 0.08,
+          "stage1": 0.2,
+          "diff": -0.12
+        },
+        "R_ankle_pitch": {
+          "human": -0.0993,
+          "stage1": -0.1,
+          "diff": 0.0007
+        }
+      },
+      "key_joint_abs_diff": {
+        "L_hip_pitch": 0.2268,
+        "L_hip_roll": 0.1127,
+        "L_knee": 0.1558,
+        "L_ankle_pitch": 0.1192,
+        "R_hip_pitch": 0.3555,
+        "R_hip_roll": 0.4965,
+        "R_knee": 0.12,
+        "R_ankle_pitch": 0.0007
+      }
+    },
+    {
+      "human_idx": 15,
+      "human_meta": {
+        "source_npz": "07_02.npz",
+        "phase_index": 1,
+        "cycle_id": 0,
+        "support_foot": "right"
+      },
+      "nearest_stage1_idx": 144,
+      "stage1_meta": {
+        "param_group_idx": 4,
+        "fsm_state": "STEP_LEFT_WITH_RIGHT_FRONT",
+        "phase_index": 0,
+        "support_foot": "right"
+      },
+      "distance": 0.803017,
+      "key_joint_comparison": {
+        "L_hip_pitch": {
+          "human": -0.6696,
+          "stage1": -0.4036,
+          "diff": -0.266
+        },
+        "L_hip_roll": {
+          "human": -0.1544,
+          "stage1": -0.0588,
+          "diff": -0.0956
+        },
+        "L_knee": {
+          "human": 0.5381,
+          "stage1": 0.292,
+          "diff": 0.2461
+        },
+        "L_ankle_pitch": {
+          "human": -0.21,
+          "stage1": -0.05,
+          "diff": -0.16
+        },
+        "R_hip_pitch": {
+          "human": 0.1732,
+          "stage1": -0.1518,
+          "diff": 0.325
+        },
+        "R_hip_roll": {
+          "human": 0.539,
+          "stage1": 0.0588,
+          "diff": 0.4802
+        },
+        "R_knee": {
+          "human": 0.2457,
+          "stage1": 0.2,
+          "diff": 0.0457
+        },
+        "R_ankle_pitch": {
+          "human": -0.1737,
+          "stage1": -0.1,
+          "diff": -0.0737
+        }
+      },
+      "key_joint_abs_diff": {
+        "L_hip_pitch": 0.266,
+        "L_hip_roll": 0.0956,
+        "L_knee": 0.2461,
+        "L_ankle_pitch": 0.16,
+        "R_hip_pitch": 0.325,
+        "R_hip_roll": 0.4802,
+        "R_knee": 0.0457,
+        "R_ankle_pitch": 0.0737
+      }
+    },
+    {
+      "human_idx": 46,
+      "human_meta": {
+        "source_npz": "07_03.npz",
+        "phase_index": 2,
+        "cycle_id": 1,
+        "support_foot": "right"
+      },
+      "nearest_stage1_idx": 16,
+      "stage1_meta": {
+        "param_group_idx": 0,
+        "fsm_state": "STEP_LEFT_WITH_RIGHT_FRONT",
+        "phase_index": 0,
+        "support_foot": "right"
+      },
+      "distance": 0.837872,
+      "key_joint_comparison": {
+        "L_hip_pitch": {
+          "human": -0.5837,
+          "stage1": -0.3273,
+          "diff": -0.2564
+        },
+        "L_hip_roll": {
+          "human": -0.1961,
+          "stage1": -0.06,
+          "diff": -0.1361
+        },
+        "L_knee": {
+          "human": 0.5215,
+          "stage1": 0.3,
+          "diff": 0.2215
+        },
+        "L_ankle_pitch": {
+          "human": -0.1009,
+          "stage1": -0.05,
+          "diff": -0.0509
+        },
+        "R_hip_pitch": {
+          "human": 0.307,
+          "stage1": -0.1136,
+          "diff": 0.4207
+        },
+        "R_hip_roll": {
+          "human": 0.5171,
+          "stage1": 0.06,
+          "diff": 0.4571
+        },
+        "R_knee": {
+          "human": 0.08,
+          "stage1": 0.2,
+          "diff": -0.12
+        },
+        "R_ankle_pitch": {
+          "human": -0.0128,
+          "stage1": -0.1,
+          "diff": 0.0872
+        }
+      },
+      "key_joint_abs_diff": {
+        "L_hip_pitch": 0.2564,
+        "L_hip_roll": 0.1361,
+        "L_knee": 0.2215,
+        "L_ankle_pitch": 0.0509,
+        "R_hip_pitch": 0.4207,
+        "R_hip_roll": 0.4571,
+        "R_knee": 0.12,
+        "R_ankle_pitch": 0.0872
+      }
+    },
+    {
+      "human_idx": 32,
+      "human_meta": {
+        "source_npz": "07_03.npz",
+        "phase_index": 2,
+        "cycle_id": 0,
+        "support_foot": "right"
+      },
+      "nearest_stage1_idx": 144,
+      "stage1_meta": {
+        "param_group_idx": 4,
+        "fsm_state": "STEP_LEFT_WITH_RIGHT_FRONT",
+        "phase_index": 0,
+        "support_foot": "right"
+      },
+      "distance": 0.839141,
+      "key_joint_comparison": {
+        "L_hip_pitch": {
+          "human": -0.5993,
+          "stage1": -0.4036,
+          "diff": -0.1957
+        },
+        "L_hip_roll": {
+          "human": -0.1832,
+          "stage1": -0.0588,
+          "diff": -0.1244
+        },
+        "L_knee": {
+          "human": 0.4754,
+          "stage1": 0.292,
+          "diff": 0.1834
+        },
+        "L_ankle_pitch": {
+          "human": -0.1853,
+          "stage1": -0.05,
+          "diff": -0.1353
+        },
+        "R_hip_pitch": {
+          "human": 0.2789,
+          "stage1": -0.1518,
+          "diff": 0.4307
+        },
+        "R_hip_roll": {
+          "human": 0.5585,
+          "stage1": 0.0588,
+          "diff": 0.4997
+        },
+        "R_knee": {
+          "human": 0.08,
+          "stage1": 0.2,
+          "diff": -0.12
+        },
+        "R_ankle_pitch": {
+          "human": -0.0496,
+          "stage1": -0.1,
+          "diff": 0.0504
+        }
+      },
+      "key_joint_abs_diff": {
+        "L_hip_pitch": 0.1957,
+        "L_hip_roll": 0.1244,
+        "L_knee": 0.1834,
+        "L_ankle_pitch": 0.1353,
+        "R_hip_pitch": 0.4307,
+        "R_hip_roll": 0.4997,
+        "R_knee": 0.12,
+        "R_ankle_pitch": 0.0504
+      }
+    },
+    {
+      "human_idx": 47,
+      "human_meta": {
+        "source_npz": "07_03.npz",
+        "phase_index": 3,
+        "cycle_id": 1,
+        "support_foot": "right"
+      },
+      "nearest_stage1_idx": 64,
+      "stage1_meta": {
+        "param_group_idx": 2,
+        "fsm_state": "STEP_RIGHT_WITH_LEFT_FRONT",
+        "phase_index": 0,
+        "support_foot": "left"
+      },
+      "distance": 0.842134,
+      "key_joint_comparison": {
+        "L_hip_pitch": {
+          "human": -0.5061,
+          "stage1": -0.3182,
+          "diff": -0.1879
+        },
+        "L_hip_roll": {
+          "human": -0.3715,
+          "stage1": 0.06,
+          "diff": -0.4315
+        },
+        "L_knee": {
+          "human": 0.562,
+          "stage1": 0.2,
+          "diff": 0.362
+        },
+        "L_ankle_pitch": {
+          "human": -0.0225,
+          "stage1": -0.1,
+          "diff": 0.0775
+        },
+        "R_hip_pitch": {
+          "human": 0.1595,
+          "stage1": 0.0,
+          "diff": 0.1595
+        },
+        "R_hip_roll": {
+          "human": 0.391,
+          "stage1": -0.06,
+          "diff": 0.451
+        },
+        "R_knee": {
+          "human": 0.6443,
+          "stage1": 0.5275,
+          "diff": 0.1168
+        },
+        "R_ankle_pitch": {
+          "human": 0.0949,
+          "stage1": 0.135,
+          "diff": -0.0401
+        }
+      },
+      "key_joint_abs_diff": {
+        "L_hip_pitch": 0.1879,
+        "L_hip_roll": 0.4315,
+        "L_knee": 0.362,
+        "L_ankle_pitch": 0.0775,
+        "R_hip_pitch": 0.1595,
+        "R_hip_roll": 0.451,
+        "R_knee": 0.1168,
+        "R_ankle_pitch": 0.0401
+      }
+    },
+    {
+      "human_idx": 72,
+      "human_meta": {
+        "source_npz": "07_04.npz",
+        "phase_index": 14,
+        "cycle_id": 0,
+        "support_foot": "left"
+      },
+      "nearest_stage1_idx": 144,
+      "stage1_meta": {
+        "param_group_idx": 4,
+        "fsm_state": "STEP_LEFT_WITH_RIGHT_FRONT",
+        "phase_index": 0,
+        "support_foot": "right"
+      },
+      "distance": 0.842402,
+      "key_joint_comparison": {
+        "L_hip_pitch": {
+          "human": -0.6891,
+          "stage1": -0.4036,
+          "diff": -0.2855
+        },
+        "L_hip_roll": {
+          "human": -0.201,
+          "stage1": -0.0588,
+          "diff": -0.1422
+        },
+        "L_knee": {
+          "human": 0.5435,
+          "stage1": 0.292,
+          "diff": 0.2515
+        },
+        "L_ankle_pitch": {
+          "human": -0.2199,
+          "stage1": -0.05,
+          "diff": -0.1699
+        },
+        "R_hip_pitch": {
+          "human": 0.0829,
+          "stage1": -0.1518,
+          "diff": 0.2347
+        },
+        "R_hip_roll": {
+          "human": 0.531,
+          "stage1": 0.0588,
+          "diff": 0.4722
+        },
+        "R_knee": {
+          "human": 0.3416,
+          "stage1": 0.2,
+          "diff": 0.1416
+        },
+        "R_ankle_pitch": {
+          "human": -0.3494,
+          "stage1": -0.1,
+          "diff": -0.2494
+        }
+      },
+      "key_joint_abs_diff": {
+        "L_hip_pitch": 0.2855,
+        "L_hip_roll": 0.1422,
+        "L_knee": 0.2515,
+        "L_ankle_pitch": 0.1699,
+        "R_hip_pitch": 0.2347,
+        "R_hip_roll": 0.4722,
+        "R_knee": 0.1416,
+        "R_ankle_pitch": 0.2494
+      }
+    },
+    {
+      "human_idx": 33,
+      "human_meta": {
+        "source_npz": "07_03.npz",
+        "phase_index": 3,
+        "cycle_id": 0,
+        "support_foot": "right"
+      },
+      "nearest_stage1_idx": 16,
+      "stage1_meta": {
+        "param_group_idx": 0,
+        "fsm_state": "STEP_LEFT_WITH_RIGHT_FRONT",
+        "phase_index": 0,
+        "support_foot": "right"
+      },
+      "distance": 0.855035,
+      "key_joint_comparison": {
+        "L_hip_pitch": {
+          "human": -0.5226,
+          "stage1": -0.3273,
+          "diff": -0.1953
+        },
+        "L_hip_roll": {
+          "human": -0.3522,
+          "stage1": -0.06,
+          "diff": -0.2922
+        },
+        "L_knee": {
+          "human": 0.5621,
+          "stage1": 0.3,
+          "diff": 0.2621
+        },
+        "L_ankle_pitch": {
+          "human": -0.0282,
+          "stage1": -0.05,
+          "diff": 0.0218
+        },
+        "R_hip_pitch": {
+          "human": 0.2188,
+          "stage1": -0.1136,
+          "diff": 0.3324
+        },
+        "R_hip_roll": {
+          "human": 0.4329,
+          "stage1": 0.06,
+          "diff": 0.3729
+        },
+        "R_knee": {
+          "human": 0.4931,
+          "stage1": 0.2,
+          "diff": 0.2931
+        },
+        "R_ankle_pitch": {
+          "human": 0.0845,
+          "stage1": -0.1,
+          "diff": 0.1845
+        }
+      },
+      "key_joint_abs_diff": {
+        "L_hip_pitch": 0.1953,
+        "L_hip_roll": 0.2922,
+        "L_knee": 0.2621,
+        "L_ankle_pitch": 0.0218,
+        "R_hip_pitch": 0.3324,
+        "R_hip_roll": 0.3729,
+        "R_knee": 0.2931,
+        "R_ankle_pitch": 0.1845
+      }
+    },
+    {
+      "human_idx": 86,
+      "human_meta": {
+        "source_npz": "07_04.npz",
+        "phase_index": 14,
+        "cycle_id": 1,
+        "support_foot": "left"
+      },
+      "nearest_stage1_idx": 144,
+      "stage1_meta": {
+        "param_group_idx": 4,
+        "fsm_state": "STEP_LEFT_WITH_RIGHT_FRONT",
+        "phase_index": 0,
+        "support_foot": "right"
+      },
+      "distance": 0.857303,
+      "key_joint_comparison": {
+        "L_hip_pitch": {
+          "human": -0.7102,
+          "stage1": -0.4036,
+          "diff": -0.3066
+        },
+        "L_hip_roll": {
+          "human": -0.2761,
+          "stage1": -0.0588,
+          "diff": -0.2173
+        },
+        "L_knee": {
+          "human": 0.578,
+          "stage1": 0.292,
+          "diff": 0.286
+        },
+        "L_ankle_pitch": {
+          "human": -0.2139,
+          "stage1": -0.05,
+          "diff": -0.1639
+        },
+        "R_hip_pitch": {
+          "human": 0.0043,
+          "stage1": -0.1518,
+          "diff": 0.1562
+        },
+        "R_hip_roll": {
+          "human": 0.5142,
+          "stage1": 0.0588,
+          "diff": 0.4554
+        },
+        "R_knee": {
+          "human": 0.4083,
+          "stage1": 0.2,
+          "diff": 0.2083
+        },
+        "R_ankle_pitch": {
+          "human": -0.3231,
+          "stage1": -0.1,
+          "diff": -0.2231
+        }
+      },
+      "key_joint_abs_diff": {
+        "L_hip_pitch": 0.3066,
+        "L_hip_roll": 0.2173,
+        "L_knee": 0.286,
+        "L_ankle_pitch": 0.1639,
+        "R_hip_pitch": 0.1562,
+        "R_hip_roll": 0.4554,
+        "R_knee": 0.2083,
+        "R_ankle_pitch": 0.2231
+      }
+    },
+    {
+      "human_idx": 87,
+      "human_meta": {
+        "source_npz": "07_04.npz",
+        "phase_index": 15,
+        "cycle_id": 1,
+        "support_foot": "left"
+      },
+      "nearest_stage1_idx": 144,
+      "stage1_meta": {
+        "param_group_idx": 4,
+        "fsm_state": "STEP_LEFT_WITH_RIGHT_FRONT",
+        "phase_index": 0,
+        "support_foot": "right"
+      },
+      "distance": 0.874615,
+      "key_joint_comparison": {
+        "L_hip_pitch": {
+          "human": -0.7316,
+          "stage1": -0.4036,
+          "diff": -0.3279
+        },
+        "L_hip_roll": {
+          "human": -0.1574,
+          "stage1": -0.0588,
+          "diff": -0.0986
+        },
+        "L_knee": {
+          "human": 0.4661,
+          "stage1": 0.292,
+          "diff": 0.1741
+        },
+        "L_ankle_pitch": {
+          "human": -0.248,
+          "stage1": -0.05,
+          "diff": -0.198
+        },
+        "R_hip_pitch": {
+          "human": 0.2324,
+          "stage1": -0.1518,
+          "diff": 0.3843
+        },
+        "R_hip_roll": {
+          "human": 0.5352,
+          "stage1": 0.0588,
+          "diff": 0.4764
+        },
+        "R_knee": {
+          "human": 0.08,
+          "stage1": 0.2,
+          "diff": -0.12
+        },
+        "R_ankle_pitch": {
+          "human": -0.2144,
+          "stage1": -0.1,
+          "diff": -0.1144
+        }
+      },
+      "key_joint_abs_diff": {
+        "L_hip_pitch": 0.3279,
+        "L_hip_roll": 0.0986,
+        "L_knee": 0.1741,
+        "L_ankle_pitch": 0.198,
+        "R_hip_pitch": 0.3843,
+        "R_hip_roll": 0.4764,
+        "R_knee": 0.12,
+        "R_ankle_pitch": 0.1144
+      }
+    }
+  ]
+}

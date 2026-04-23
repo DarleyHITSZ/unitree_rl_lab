@@ -1,0 +1,520 @@
+{
+  "sensitivity_score_mode": "composite_score",
+  "sensitivity_alpha": 0.6,
+  "parameters": {
+    "HL": {
+      "original_range": [
+        20,
+        60
+      ],
+      "focus_zones": [
+        [
+          20,
+          24
+        ],
+        [
+          36,
+          44
+        ],
+        [
+          52,
+          60
+        ]
+      ],
+      "smoothed_sensitivity_scores": [
+        {
+          "range": [
+            20,
+            24
+          ],
+          "score": 0.024984,
+          "smoothed_start": 0.486081,
+          "smoothed_end": 0.386146
+        },
+        {
+          "range": [
+            24,
+            28
+          ],
+          "score": 0.017614,
+          "smoothed_start": 0.386146,
+          "smoothed_end": 0.315688
+        },
+        {
+          "range": [
+            28,
+            32
+          ],
+          "score": 0.01059,
+          "smoothed_start": 0.315688,
+          "smoothed_end": 0.358049
+        },
+        {
+          "range": [
+            32,
+            36
+          ],
+          "score": 0.010602,
+          "smoothed_start": 0.358049,
+          "smoothed_end": 0.400458
+        },
+        {
+          "range": [
+            36,
+            40
+          ],
+          "score": 0.004018,
+          "smoothed_start": 0.400458,
+          "smoothed_end": 0.41653
+        },
+        {
+          "range": [
+            40,
+            44
+          ],
+          "score": 0.00942,
+          "smoothed_start": 0.41653,
+          "smoothed_end": 0.37885
+        },
+        {
+          "range": [
+            44,
+            48
+          ],
+          "score": 0.00236,
+          "smoothed_start": 0.37885,
+          "smoothed_end": 0.369409
+        },
+        {
+          "range": [
+            48,
+            52
+          ],
+          "score": 0.005723,
+          "smoothed_start": 0.369409,
+          "smoothed_end": 0.3923
+        },
+        {
+          "range": [
+            52,
+            56
+          ],
+          "score": 0.019008,
+          "smoothed_start": 0.3923,
+          "smoothed_end": 0.468332
+        },
+        {
+          "range": [
+            56,
+            60
+          ],
+          "score": 0.032917,
+          "smoothed_start": 0.468332,
+          "smoothed_end": 0.6
+        }
+      ],
+      "discrete_values": [
+        20,
+        21,
+        22,
+        23,
+        24,
+        28,
+        32,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        48,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60
+      ],
+      "num_values": 26
+    },
+    "Ls": {
+      "original_range": [
+        40,
+        95
+      ],
+      "focus_zones": [
+        [
+          40,
+          60
+        ]
+      ],
+      "smoothed_sensitivity_scores": [
+        {
+          "range": [
+            40,
+            45
+          ],
+          "score": 0.015256,
+          "smoothed_start": 1.0,
+          "smoothed_end": 0.923721
+        },
+        {
+          "range": [
+            45,
+            50
+          ],
+          "score": 0.021508,
+          "smoothed_start": 0.923721,
+          "smoothed_end": 0.816183
+        },
+        {
+          "range": [
+            50,
+            55
+          ],
+          "score": 0.021805,
+          "smoothed_start": 0.816183,
+          "smoothed_end": 0.70716
+        },
+        {
+          "range": [
+            55,
+            60
+          ],
+          "score": 0.02104,
+          "smoothed_start": 0.70716,
+          "smoothed_end": 0.601959
+        },
+        {
+          "range": [
+            60,
+            65
+          ],
+          "score": 0.014379,
+          "smoothed_start": 0.601959,
+          "smoothed_end": 0.530062
+        },
+        {
+          "range": [
+            65,
+            70
+          ],
+          "score": 0.020529,
+          "smoothed_start": 0.530062,
+          "smoothed_end": 0.427418
+        },
+        {
+          "range": [
+            70,
+            75
+          ],
+          "score": 0.012885,
+          "smoothed_start": 0.427418,
+          "smoothed_end": 0.362994
+        },
+        {
+          "range": [
+            75,
+            80
+          ],
+          "score": 0.019435,
+          "smoothed_start": 0.362994,
+          "smoothed_end": 0.26582
+        },
+        {
+          "range": [
+            80,
+            85
+          ],
+          "score": 0.019103,
+          "smoothed_start": 0.26582,
+          "smoothed_end": 0.170307
+        },
+        {
+          "range": [
+            85,
+            90
+          ],
+          "score": 0.020216,
+          "smoothed_start": 0.170307,
+          "smoothed_end": 0.069226
+        },
+        {
+          "range": [
+            90,
+            95
+          ],
+          "score": 0.013845,
+          "smoothed_start": 0.069226,
+          "smoothed_end": 0.0
+        }
+      ],
+      "discrete_values": [
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        65,
+        70,
+        75,
+        80,
+        85,
+        90,
+        95
+      ],
+      "num_values": 28
+    },
+    "Lswb": {
+      "original_range": [
+        15,
+        40
+      ],
+      "focus_zones": [
+        [
+          33,
+          40
+        ]
+      ],
+      "smoothed_sensitivity_scores": [
+        {
+          "range": [
+            15,
+            18
+          ],
+          "score": 0.019364,
+          "smoothed_start": 0.4,
+          "smoothed_end": 0.341909
+        },
+        {
+          "range": [
+            18,
+            21
+          ],
+          "score": 0.016472,
+          "smoothed_start": 0.341909,
+          "smoothed_end": 0.292492
+        },
+        {
+          "range": [
+            21,
+            24
+          ],
+          "score": 0.018358,
+          "smoothed_start": 0.292492,
+          "smoothed_end": 0.347567
+        },
+        {
+          "range": [
+            24,
+            27
+          ],
+          "score": 0.018813,
+          "smoothed_start": 0.347567,
+          "smoothed_end": 0.404006
+        },
+        {
+          "range": [
+            27,
+            30
+          ],
+          "score": 0.017995,
+          "smoothed_start": 0.404006,
+          "smoothed_end": 0.45799
+        },
+        {
+          "range": [
+            30,
+            33
+          ],
+          "score": 0.0179,
+          "smoothed_start": 0.45799,
+          "smoothed_end": 0.511689
+        },
+        {
+          "range": [
+            33,
+            36
+          ],
+          "score": 0.017657,
+          "smoothed_start": 0.511689,
+          "smoothed_end": 0.564661
+        },
+        {
+          "range": [
+            36,
+            39
+          ],
+          "score": 0.0207,
+          "smoothed_start": 0.564661,
+          "smoothed_end": 0.62676
+        },
+        {
+          "range": [
+            39,
+            40
+          ],
+          "score": 0.02676,
+          "smoothed_start": 0.62676,
+          "smoothed_end": 0.6
+        }
+      ],
+      "discrete_values": [
+        15,
+        18,
+        21,
+        24,
+        27,
+        30,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40
+      ],
+      "num_values": 14
+    },
+    "Lforward": {
+      "original_range": [
+        5,
+        40
+      ],
+      "focus_zones": [
+        [
+          5,
+          17
+        ]
+      ],
+      "smoothed_sensitivity_scores": [
+        {
+          "range": [
+            5,
+            9
+          ],
+          "score": 0.016288,
+          "smoothed_start": 0.6,
+          "smoothed_end": 0.534848
+        },
+        {
+          "range": [
+            9,
+            13
+          ],
+          "score": 0.01598,
+          "smoothed_start": 0.534848,
+          "smoothed_end": 0.470929
+        },
+        {
+          "range": [
+            13,
+            17
+          ],
+          "score": 0.005112,
+          "smoothed_start": 0.470929,
+          "smoothed_end": 0.450483
+        },
+        {
+          "range": [
+            17,
+            21
+          ],
+          "score": 0.006792,
+          "smoothed_start": 0.450483,
+          "smoothed_end": 0.423314
+        },
+        {
+          "range": [
+            21,
+            25
+          ],
+          "score": 0.001804,
+          "smoothed_start": 0.423314,
+          "smoothed_end": 0.416097
+        },
+        {
+          "range": [
+            25,
+            29
+          ],
+          "score": 0.001586,
+          "smoothed_start": 0.416097,
+          "smoothed_end": 0.409754
+        },
+        {
+          "range": [
+            29,
+            33
+          ],
+          "score": 0.001896,
+          "smoothed_start": 0.409754,
+          "smoothed_end": 0.40217
+        },
+        {
+          "range": [
+            33,
+            37
+          ],
+          "score": 0.001117,
+          "smoothed_start": 0.40217,
+          "smoothed_end": 0.40664
+        },
+        {
+          "range": [
+            37,
+            40
+          ],
+          "score": 0.002213,
+          "smoothed_start": 0.40664,
+          "smoothed_end": 0.4
+        }
+      ],
+      "discrete_values": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        21,
+        25,
+        29,
+        33,
+        37,
+        40
+      ],
+      "num_values": 19
+    }
+  }
+}

@@ -1,0 +1,2559 @@
+{
+  "stage1_count": 160,
+  "human_input": 240,
+  "human_final": 56,
+  "final_total": 216,
+  "soft_target_human_total": 56,
+  "soft_target_reached": true,
+  "filter_report": {
+    "total_input": 240,
+    "validity_passed": 240,
+    "validity_rejected": 0,
+    "validity_reasons": {
+      "nan_or_inf": 0,
+      "clip_ratio_exceeded": 0,
+      "key_joint_saturated": 0,
+      "near_default_pose": 0,
+      "total_rejected": 0
+    },
+    "morphology_passed": 210,
+    "morphology_rejected": 30,
+    "morphology_reasons": {
+      "knee_out_of_range": 0,
+      "asymmetry_mode": "half_cycle_mirror",
+      "excessive_asymmetry": 0,
+      "not_smooth": 30,
+      "total_rejected": 30
+    },
+    "final_kept": 210,
+    "old_asymmetry_stat": {
+      "mean": 1.276766,
+      "max": 1.88722,
+      "rejected_by_old": 36
+    },
+    "new_asymmetry_stat": {
+      "mean": 0.237879,
+      "max": 0.684209,
+      "rejected_by_new": 0
+    },
+    "key_joint_saturated_by_joint": {
+      "L_hip_pitch": {
+        "count_saturated": 0,
+        "mean_margin": 1.105963,
+        "min_margin": 0.589179,
+        "p10_margin": 0.787395,
+        "p50_margin": 1.129523
+      },
+      "L_hip_roll": {
+        "count_saturated": 0,
+        "mean_margin": 0.235966,
+        "min_margin": 0.047796,
+        "p10_margin": 0.089658,
+        "p50_margin": 0.247419
+      },
+      "L_knee": {
+        "count_saturated": 0,
+        "mean_margin": 0.577902,
+        "min_margin": 0.08,
+        "p10_margin": 0.08,
+        "p50_margin": 0.57931
+      },
+      "L_ankle_pitch": {
+        "count_saturated": 0,
+        "mean_margin": 0.812117,
+        "min_margin": 0.627672,
+        "p10_margin": 0.696535,
+        "p50_margin": 0.790589
+      },
+      "R_hip_pitch": {
+        "count_saturated": 0,
+        "mean_margin": 1.149669,
+        "min_margin": 0.62984,
+        "p10_margin": 0.801002,
+        "p50_margin": 1.18747
+      },
+      "R_hip_roll": {
+        "count_saturated": 0,
+        "mean_margin": 0.211922,
+        "min_margin": 0.022326,
+        "p10_margin": 0.060898,
+        "p50_margin": 0.18811
+      },
+      "R_knee": {
+        "count_saturated": 0,
+        "mean_margin": 0.621162,
+        "min_margin": 0.08,
+        "p10_margin": 0.08,
+        "p50_margin": 0.682127
+      },
+      "R_ankle_pitch": {
+        "count_saturated": 0,
+        "mean_margin": 0.771244,
+        "min_margin": 0.421849,
+        "p10_margin": 0.620878,
+        "p50_margin": 0.768257
+      }
+    }
+  },
+  "stage1_dedup_report": {
+    "total_human": 210,
+    "kept": 210,
+    "absorbed": 0,
+    "absorbed_details": [],
+    "distance_stats": {
+      "mean": 1.370059,
+      "min": 0.759609,
+      "max": 2.066558,
+      "threshold": 0.4
+    }
+  },
+  "human_dedup_report": {
+    "total": 210,
+    "kept": 97,
+    "removed": 113,
+    "within_phase_removed": 113,
+    "cross_phase_removed": 0,
+    "within_phase_threshold": 0.25,
+    "cross_phase_threshold": 0.0,
+    "removal_log": [
+      {
+        "removed_idx": 157,
+        "kept_idx": 173,
+        "distance": 0.15772,
+        "removed_score": 0.664969,
+        "kept_score": 0.665288,
+        "removed_phase": 3,
+        "kept_phase": 3,
+        "removed_source_npz": "07_10.npz",
+        "kept_source_npz": "07_11.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 117,
+        "kept_idx": 173,
+        "distance": 0.174667,
+        "removed_score": 0.662025,
+        "kept_score": 0.665288,
+        "removed_phase": 3,
+        "kept_phase": 3,
+        "removed_source_npz": "07_08.npz",
+        "kept_source_npz": "07_11.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 185,
+        "kept_idx": 173,
+        "distance": 0.108261,
+        "removed_score": 0.657217,
+        "kept_score": 0.665288,
+        "removed_phase": 3,
+        "kept_phase": 3,
+        "removed_source_npz": "07_11.npz",
+        "kept_source_npz": "07_11.npz",
+        "removed_cycle_id": 1,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 129,
+        "kept_idx": 173,
+        "distance": 0.174345,
+        "removed_score": 0.650801,
+        "kept_score": 0.665288,
+        "removed_phase": 3,
+        "kept_phase": 3,
+        "removed_source_npz": "07_08.npz",
+        "kept_source_npz": "07_11.npz",
+        "removed_cycle_id": 1,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 199,
+        "kept_idx": 105,
+        "distance": 0.169634,
+        "removed_score": 0.649975,
+        "kept_score": 0.663739,
+        "removed_phase": 3,
+        "kept_phase": 3,
+        "removed_source_npz": "07_12.npz",
+        "kept_source_npz": "07_06.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 143,
+        "kept_idx": 105,
+        "distance": 0.115789,
+        "removed_score": 0.633494,
+        "kept_score": 0.663739,
+        "removed_phase": 3,
+        "kept_phase": 3,
+        "removed_source_npz": "07_09.npz",
+        "kept_source_npz": "07_06.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 61,
+        "kept_idx": 105,
+        "distance": 0.244501,
+        "removed_score": 0.590925,
+        "kept_score": 0.663739,
+        "removed_phase": 3,
+        "kept_phase": 3,
+        "removed_source_npz": "07_04.npz",
+        "kept_source_npz": "07_06.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 135,
+        "kept_idx": 205,
+        "distance": 0.169702,
+        "removed_score": 0.644943,
+        "kept_score": 0.650476,
+        "removed_phase": 11,
+        "kept_phase": 11,
+        "removed_source_npz": "07_08.npz",
+        "kept_source_npz": "07_12.npz",
+        "removed_cycle_id": 1,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 149,
+        "kept_idx": 205,
+        "distance": 0.146857,
+        "removed_score": 0.617448,
+        "kept_score": 0.650476,
+        "removed_phase": 11,
+        "kept_phase": 11,
+        "removed_source_npz": "07_09.npz",
+        "kept_source_npz": "07_12.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 190,
+        "kept_idx": 178,
+        "distance": 0.181398,
+        "removed_score": 0.644749,
+        "kept_score": 0.648749,
+        "removed_phase": 10,
+        "kept_phase": 10,
+        "removed_source_npz": "07_11.npz",
+        "kept_source_npz": "07_11.npz",
+        "removed_cycle_id": 1,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 156,
+        "kept_idx": 172,
+        "distance": 0.18467,
+        "removed_score": 0.645603,
+        "kept_score": 0.647983,
+        "removed_phase": 2,
+        "kept_phase": 2,
+        "removed_source_npz": "07_10.npz",
+        "kept_source_npz": "07_11.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 184,
+        "kept_idx": 172,
+        "distance": 0.115202,
+        "removed_score": 0.636057,
+        "kept_score": 0.647983,
+        "removed_phase": 2,
+        "kept_phase": 2,
+        "removed_source_npz": "07_11.npz",
+        "kept_source_npz": "07_11.npz",
+        "removed_cycle_id": 1,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 116,
+        "kept_idx": 172,
+        "distance": 0.214137,
+        "removed_score": 0.627649,
+        "kept_score": 0.647983,
+        "removed_phase": 2,
+        "kept_phase": 2,
+        "removed_source_npz": "07_08.npz",
+        "kept_source_npz": "07_11.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 128,
+        "kept_idx": 172,
+        "distance": 0.189585,
+        "removed_score": 0.622704,
+        "kept_score": 0.647983,
+        "removed_phase": 2,
+        "kept_phase": 2,
+        "removed_source_npz": "07_08.npz",
+        "kept_source_npz": "07_11.npz",
+        "removed_cycle_id": 1,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 69,
+        "kept_idx": 111,
+        "distance": 0.227319,
+        "removed_score": 0.600678,
+        "kept_score": 0.640034,
+        "removed_phase": 11,
+        "kept_phase": 11,
+        "removed_source_npz": "07_04.npz",
+        "kept_source_npz": "07_06.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 123,
+        "kept_idx": 179,
+        "distance": 0.184485,
+        "removed_score": 0.634475,
+        "kept_score": 0.639226,
+        "removed_phase": 11,
+        "kept_phase": 11,
+        "removed_source_npz": "07_08.npz",
+        "kept_source_npz": "07_11.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 191,
+        "kept_idx": 179,
+        "distance": 0.148257,
+        "removed_score": 0.623636,
+        "kept_score": 0.639226,
+        "removed_phase": 11,
+        "kept_phase": 11,
+        "removed_source_npz": "07_11.npz",
+        "kept_source_npz": "07_11.npz",
+        "removed_cycle_id": 1,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 165,
+        "kept_idx": 179,
+        "distance": 0.24582,
+        "removed_score": 0.617346,
+        "kept_score": 0.639226,
+        "removed_phase": 11,
+        "kept_phase": 11,
+        "removed_source_npz": "07_10.npz",
+        "kept_source_npz": "07_11.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 164,
+        "kept_idx": 134,
+        "distance": 0.244503,
+        "removed_score": 0.638203,
+        "kept_score": 0.638345,
+        "removed_phase": 10,
+        "kept_phase": 10,
+        "removed_source_npz": "07_10.npz",
+        "kept_source_npz": "07_08.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 1,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 204,
+        "kept_idx": 134,
+        "distance": 0.236152,
+        "removed_score": 0.633662,
+        "kept_score": 0.638345,
+        "removed_phase": 10,
+        "kept_phase": 10,
+        "removed_source_npz": "07_12.npz",
+        "kept_source_npz": "07_08.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 1,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 122,
+        "kept_idx": 134,
+        "distance": 0.145162,
+        "removed_score": 0.633562,
+        "kept_score": 0.638345,
+        "removed_phase": 10,
+        "kept_phase": 10,
+        "removed_source_npz": "07_08.npz",
+        "kept_source_npz": "07_08.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 1,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 148,
+        "kept_idx": 134,
+        "distance": 0.220354,
+        "removed_score": 0.607479,
+        "kept_score": 0.638345,
+        "removed_phase": 10,
+        "kept_phase": 10,
+        "removed_source_npz": "07_09.npz",
+        "kept_source_npz": "07_08.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 1,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 144,
+        "kept_idx": 106,
+        "distance": 0.11149,
+        "removed_score": 0.632132,
+        "kept_score": 0.63305,
+        "removed_phase": 4,
+        "kept_phase": 4,
+        "removed_source_npz": "07_09.npz",
+        "kept_source_npz": "07_06.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 118,
+        "kept_idx": 106,
+        "distance": 0.208152,
+        "removed_score": 0.612311,
+        "kept_score": 0.63305,
+        "removed_phase": 4,
+        "kept_phase": 4,
+        "removed_source_npz": "07_08.npz",
+        "kept_source_npz": "07_06.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 200,
+        "kept_idx": 106,
+        "distance": 0.208465,
+        "removed_score": 0.607908,
+        "kept_score": 0.63305,
+        "removed_phase": 4,
+        "kept_phase": 4,
+        "removed_source_npz": "07_12.npz",
+        "kept_source_npz": "07_06.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 62,
+        "kept_idx": 106,
+        "distance": 0.214889,
+        "removed_score": 0.584153,
+        "kept_score": 0.63305,
+        "removed_phase": 4,
+        "kept_phase": 4,
+        "removed_source_npz": "07_04.npz",
+        "kept_source_npz": "07_06.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 78,
+        "kept_idx": 106,
+        "distance": 0.247285,
+        "removed_score": 0.57044,
+        "kept_score": 0.63305,
+        "removed_phase": 4,
+        "kept_phase": 4,
+        "removed_source_npz": "07_04.npz",
+        "kept_source_npz": "07_06.npz",
+        "removed_cycle_id": 1,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 50,
+        "kept_idx": 20,
+        "distance": 0.187303,
+        "removed_score": 0.612509,
+        "kept_score": 0.624106,
+        "removed_phase": 6,
+        "kept_phase": 6,
+        "removed_source_npz": "07_03.npz",
+        "kept_source_npz": "07_02.npz",
+        "removed_cycle_id": 1,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 36,
+        "kept_idx": 20,
+        "distance": 0.209474,
+        "removed_score": 0.598419,
+        "kept_score": 0.624106,
+        "removed_phase": 6,
+        "kept_phase": 6,
+        "removed_source_npz": "07_03.npz",
+        "kept_source_npz": "07_02.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 174,
+        "kept_idx": 130,
+        "distance": 0.224964,
+        "removed_score": 0.601204,
+        "kept_score": 0.618646,
+        "removed_phase": 4,
+        "kept_phase": 4,
+        "removed_source_npz": "07_11.npz",
+        "kept_source_npz": "07_08.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 1,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 158,
+        "kept_idx": 130,
+        "distance": 0.201191,
+        "removed_score": 0.589101,
+        "kept_score": 0.618646,
+        "removed_phase": 4,
+        "kept_phase": 4,
+        "removed_source_npz": "07_10.npz",
+        "kept_source_npz": "07_08.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 1,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 186,
+        "kept_idx": 130,
+        "distance": 0.221124,
+        "removed_score": 0.581403,
+        "kept_score": 0.618646,
+        "removed_phase": 4,
+        "kept_phase": 4,
+        "removed_source_npz": "07_11.npz",
+        "kept_source_npz": "07_08.npz",
+        "removed_cycle_id": 1,
+        "kept_cycle_id": 1,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 92,
+        "kept_idx": 130,
+        "distance": 0.232157,
+        "removed_score": 0.559399,
+        "kept_score": 0.618646,
+        "removed_phase": 4,
+        "kept_phase": 4,
+        "removed_source_npz": "07_05.npz",
+        "kept_source_npz": "07_08.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 1,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 55,
+        "kept_idx": 27,
+        "distance": 0.111862,
+        "removed_score": 0.615919,
+        "kept_score": 0.617662,
+        "removed_phase": 13,
+        "kept_phase": 13,
+        "removed_source_npz": "07_03.npz",
+        "kept_source_npz": "07_02.npz",
+        "removed_cycle_id": 1,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 41,
+        "kept_idx": 27,
+        "distance": 0.149497,
+        "removed_score": 0.59544,
+        "kept_score": 0.617662,
+        "removed_phase": 13,
+        "kept_phase": 13,
+        "removed_source_npz": "07_03.npz",
+        "kept_source_npz": "07_02.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 142,
+        "kept_idx": 198,
+        "distance": 0.153151,
+        "removed_score": 0.570449,
+        "kept_score": 0.606951,
+        "removed_phase": 2,
+        "kept_phase": 2,
+        "removed_source_npz": "07_09.npz",
+        "kept_source_npz": "07_12.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 104,
+        "kept_idx": 198,
+        "distance": 0.180663,
+        "removed_score": 0.564614,
+        "kept_score": 0.606951,
+        "removed_phase": 2,
+        "kept_phase": 2,
+        "removed_source_npz": "07_06.npz",
+        "kept_source_npz": "07_12.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 70,
+        "kept_idx": 206,
+        "distance": 0.166429,
+        "removed_score": 0.580408,
+        "kept_score": 0.603845,
+        "removed_phase": 12,
+        "kept_phase": 12,
+        "removed_source_npz": "07_04.npz",
+        "kept_source_npz": "07_12.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 112,
+        "kept_idx": 206,
+        "distance": 0.152966,
+        "removed_score": 0.547407,
+        "kept_score": 0.603845,
+        "removed_phase": 12,
+        "kept_phase": 12,
+        "removed_source_npz": "07_06.npz",
+        "kept_source_npz": "07_12.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 155,
+        "kept_idx": 171,
+        "distance": 0.180388,
+        "removed_score": 0.541138,
+        "kept_score": 0.582337,
+        "removed_phase": 1,
+        "kept_phase": 1,
+        "removed_source_npz": "07_10.npz",
+        "kept_source_npz": "07_11.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 56,
+        "kept_idx": 28,
+        "distance": 0.127004,
+        "removed_score": 0.533525,
+        "kept_score": 0.575419,
+        "removed_phase": 14,
+        "kept_phase": 14,
+        "removed_source_npz": "07_03.npz",
+        "kept_source_npz": "07_02.npz",
+        "removed_cycle_id": 1,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 42,
+        "kept_idx": 28,
+        "distance": 0.228863,
+        "removed_score": 0.500542,
+        "kept_score": 0.575419,
+        "removed_phase": 14,
+        "kept_phase": 14,
+        "removed_source_npz": "07_03.npz",
+        "kept_source_npz": "07_02.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 9,
+        "kept_idx": 83,
+        "distance": 0.228975,
+        "removed_score": 0.499323,
+        "kept_score": 0.573994,
+        "removed_phase": 11,
+        "kept_phase": 11,
+        "removed_source_npz": "07_01.npz",
+        "kept_source_npz": "07_04.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 1,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 35,
+        "kept_idx": 49,
+        "distance": 0.071808,
+        "removed_score": 0.543838,
+        "kept_score": 0.563405,
+        "removed_phase": 5,
+        "kept_phase": 5,
+        "removed_source_npz": "07_03.npz",
+        "kept_source_npz": "07_03.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 1,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 96,
+        "kept_idx": 110,
+        "distance": 0.171113,
+        "removed_score": 0.556296,
+        "kept_score": 0.557512,
+        "removed_phase": 10,
+        "kept_phase": 10,
+        "removed_source_npz": "07_05.npz",
+        "kept_source_npz": "07_06.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 169,
+        "kept_idx": 195,
+        "distance": 0.088464,
+        "removed_score": 0.506337,
+        "kept_score": 0.538079,
+        "removed_phase": 15,
+        "kept_phase": 15,
+        "removed_source_npz": "07_10.npz",
+        "kept_source_npz": "07_11.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 1,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 21,
+        "kept_idx": 51,
+        "distance": 0.110886,
+        "removed_score": 0.497507,
+        "kept_score": 0.505212,
+        "removed_phase": 7,
+        "kept_phase": 7,
+        "removed_source_npz": "07_02.npz",
+        "kept_source_npz": "07_03.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 1,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 37,
+        "kept_idx": 51,
+        "distance": 0.117613,
+        "removed_score": 0.474904,
+        "kept_score": 0.505212,
+        "removed_phase": 7,
+        "kept_phase": 7,
+        "removed_source_npz": "07_03.npz",
+        "kept_source_npz": "07_03.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 1,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 54,
+        "kept_idx": 26,
+        "distance": 0.243366,
+        "removed_score": 0.493487,
+        "kept_score": 0.502842,
+        "removed_phase": 12,
+        "kept_phase": 12,
+        "removed_source_npz": "07_03.npz",
+        "kept_source_npz": "07_02.npz",
+        "removed_cycle_id": 1,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 40,
+        "kept_idx": 26,
+        "distance": 0.233516,
+        "removed_score": 0.47269,
+        "kept_score": 0.502842,
+        "removed_phase": 12,
+        "kept_phase": 12,
+        "removed_source_npz": "07_03.npz",
+        "kept_source_npz": "07_02.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 145,
+        "kept_idx": 107,
+        "distance": 0.136815,
+        "removed_score": 0.456286,
+        "kept_score": 0.487893,
+        "removed_phase": 5,
+        "kept_phase": 5,
+        "removed_source_npz": "07_09.npz",
+        "kept_source_npz": "07_06.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 201,
+        "kept_idx": 107,
+        "distance": 0.233988,
+        "removed_score": 0.454345,
+        "kept_score": 0.487893,
+        "removed_phase": 5,
+        "kept_phase": 5,
+        "removed_source_npz": "07_12.npz",
+        "kept_source_npz": "07_06.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 131,
+        "kept_idx": 107,
+        "distance": 0.232586,
+        "removed_score": 0.445742,
+        "kept_score": 0.487893,
+        "removed_phase": 5,
+        "kept_phase": 5,
+        "removed_source_npz": "07_08.npz",
+        "kept_source_npz": "07_06.npz",
+        "removed_cycle_id": 1,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 63,
+        "kept_idx": 107,
+        "distance": 0.160763,
+        "removed_score": 0.438558,
+        "kept_score": 0.487893,
+        "removed_phase": 5,
+        "kept_phase": 5,
+        "removed_source_npz": "07_04.npz",
+        "kept_source_npz": "07_06.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 180,
+        "kept_idx": 136,
+        "distance": 0.164761,
+        "removed_score": 0.467538,
+        "kept_score": 0.473336,
+        "removed_phase": 12,
+        "kept_phase": 12,
+        "removed_source_npz": "07_11.npz",
+        "kept_source_npz": "07_08.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 1,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 150,
+        "kept_idx": 136,
+        "distance": 0.165376,
+        "removed_score": 0.452976,
+        "kept_score": 0.473336,
+        "removed_phase": 12,
+        "kept_phase": 12,
+        "removed_source_npz": "07_09.npz",
+        "kept_source_npz": "07_08.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 1,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 124,
+        "kept_idx": 136,
+        "distance": 0.121208,
+        "removed_score": 0.441244,
+        "kept_score": 0.473336,
+        "removed_phase": 12,
+        "kept_phase": 12,
+        "removed_source_npz": "07_08.npz",
+        "kept_source_npz": "07_08.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 1,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 166,
+        "kept_idx": 136,
+        "distance": 0.225337,
+        "removed_score": 0.411495,
+        "kept_score": 0.473336,
+        "removed_phase": 12,
+        "kept_phase": 12,
+        "removed_source_npz": "07_10.npz",
+        "kept_source_npz": "07_08.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 1,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 141,
+        "kept_idx": 103,
+        "distance": 0.118087,
+        "removed_score": 0.45959,
+        "kept_score": 0.470708,
+        "removed_phase": 1,
+        "kept_phase": 1,
+        "removed_source_npz": "07_09.npz",
+        "kept_source_npz": "07_06.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 59,
+        "kept_idx": 103,
+        "distance": 0.245341,
+        "removed_score": 0.408902,
+        "kept_score": 0.470708,
+        "removed_phase": 1,
+        "kept_phase": 1,
+        "removed_source_npz": "07_04.npz",
+        "kept_source_npz": "07_06.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 154,
+        "kept_idx": 170,
+        "distance": 0.184964,
+        "removed_score": 0.433831,
+        "kept_score": 0.466167,
+        "removed_phase": 0,
+        "kept_phase": 0,
+        "removed_source_npz": "07_10.npz",
+        "kept_source_npz": "07_11.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 139,
+        "kept_idx": 127,
+        "distance": 0.184333,
+        "removed_score": 0.427643,
+        "kept_score": 0.458915,
+        "removed_phase": 15,
+        "kept_phase": 15,
+        "removed_source_npz": "07_08.npz",
+        "kept_source_npz": "07_08.npz",
+        "removed_cycle_id": 1,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 177,
+        "kept_idx": 121,
+        "distance": 0.162653,
+        "removed_score": 0.434127,
+        "kept_score": 0.447186,
+        "removed_phase": 7,
+        "kept_phase": 7,
+        "removed_source_npz": "07_11.npz",
+        "kept_source_npz": "07_08.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 133,
+        "kept_idx": 121,
+        "distance": 0.234444,
+        "removed_score": 0.411728,
+        "kept_score": 0.447186,
+        "removed_phase": 7,
+        "kept_phase": 7,
+        "removed_source_npz": "07_08.npz",
+        "kept_source_npz": "07_08.npz",
+        "removed_cycle_id": 1,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 189,
+        "kept_idx": 121,
+        "distance": 0.20581,
+        "removed_score": 0.403332,
+        "kept_score": 0.447186,
+        "removed_phase": 7,
+        "kept_phase": 7,
+        "removed_source_npz": "07_11.npz",
+        "kept_source_npz": "07_08.npz",
+        "removed_cycle_id": 1,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 95,
+        "kept_idx": 121,
+        "distance": 0.174818,
+        "removed_score": 0.389787,
+        "kept_score": 0.447186,
+        "removed_phase": 7,
+        "kept_phase": 7,
+        "removed_source_npz": "07_05.npz",
+        "kept_source_npz": "07_08.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 161,
+        "kept_idx": 121,
+        "distance": 0.134574,
+        "removed_score": 0.358367,
+        "kept_score": 0.447186,
+        "removed_phase": 7,
+        "kept_phase": 7,
+        "removed_source_npz": "07_10.npz",
+        "kept_source_npz": "07_08.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 175,
+        "kept_idx": 119,
+        "distance": 0.205773,
+        "removed_score": 0.425036,
+        "kept_score": 0.444361,
+        "removed_phase": 5,
+        "kept_phase": 5,
+        "removed_source_npz": "07_11.npz",
+        "kept_source_npz": "07_08.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 159,
+        "kept_idx": 119,
+        "distance": 0.17008,
+        "removed_score": 0.420739,
+        "kept_score": 0.444361,
+        "removed_phase": 5,
+        "kept_phase": 5,
+        "removed_source_npz": "07_10.npz",
+        "kept_source_npz": "07_08.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 93,
+        "kept_idx": 119,
+        "distance": 0.176028,
+        "removed_score": 0.368012,
+        "kept_score": 0.444361,
+        "removed_phase": 5,
+        "kept_phase": 5,
+        "removed_source_npz": "07_05.npz",
+        "kept_source_npz": "07_08.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 176,
+        "kept_idx": 120,
+        "distance": 0.112213,
+        "removed_score": 0.436212,
+        "kept_score": 0.442882,
+        "removed_phase": 6,
+        "kept_phase": 6,
+        "removed_source_npz": "07_11.npz",
+        "kept_source_npz": "07_08.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 132,
+        "kept_idx": 120,
+        "distance": 0.061313,
+        "removed_score": 0.431689,
+        "kept_score": 0.442882,
+        "removed_phase": 6,
+        "kept_phase": 6,
+        "removed_source_npz": "07_08.npz",
+        "kept_source_npz": "07_08.npz",
+        "removed_cycle_id": 1,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 188,
+        "kept_idx": 120,
+        "distance": 0.141674,
+        "removed_score": 0.42774,
+        "kept_score": 0.442882,
+        "removed_phase": 6,
+        "kept_phase": 6,
+        "removed_source_npz": "07_11.npz",
+        "kept_source_npz": "07_08.npz",
+        "removed_cycle_id": 1,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 94,
+        "kept_idx": 120,
+        "distance": 0.202024,
+        "removed_score": 0.415694,
+        "kept_score": 0.442882,
+        "removed_phase": 6,
+        "kept_phase": 6,
+        "removed_source_npz": "07_05.npz",
+        "kept_source_npz": "07_08.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 160,
+        "kept_idx": 120,
+        "distance": 0.212734,
+        "removed_score": 0.408582,
+        "kept_score": 0.442882,
+        "removed_phase": 6,
+        "kept_phase": 6,
+        "removed_source_npz": "07_10.npz",
+        "kept_source_npz": "07_08.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 146,
+        "kept_idx": 120,
+        "distance": 0.230029,
+        "removed_score": 0.381742,
+        "kept_score": 0.442882,
+        "removed_phase": 6,
+        "kept_phase": 6,
+        "removed_source_npz": "07_09.npz",
+        "kept_source_npz": "07_08.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 8,
+        "kept_idx": 82,
+        "distance": 0.09856,
+        "removed_score": 0.391704,
+        "kept_score": 0.431372,
+        "removed_phase": 8,
+        "kept_phase": 8,
+        "removed_source_npz": "07_01.npz",
+        "kept_source_npz": "07_04.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 1,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 22,
+        "kept_idx": 82,
+        "distance": 0.204014,
+        "removed_score": 0.306011,
+        "kept_score": 0.431372,
+        "removed_phase": 8,
+        "kept_phase": 8,
+        "removed_source_npz": "07_02.npz",
+        "kept_source_npz": "07_04.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 1,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 81,
+        "kept_idx": 65,
+        "distance": 0.169489,
+        "removed_score": 0.420296,
+        "kept_score": 0.423554,
+        "removed_phase": 7,
+        "kept_phase": 7,
+        "removed_source_npz": "07_04.npz",
+        "kept_source_npz": "07_04.npz",
+        "removed_cycle_id": 1,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 109,
+        "kept_idx": 65,
+        "distance": 0.167231,
+        "removed_score": 0.390475,
+        "kept_score": 0.423554,
+        "removed_phase": 7,
+        "kept_phase": 7,
+        "removed_source_npz": "07_06.npz",
+        "kept_source_npz": "07_04.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 7,
+        "kept_idx": 65,
+        "distance": 0.180224,
+        "removed_score": 0.359422,
+        "kept_score": 0.423554,
+        "removed_phase": 7,
+        "kept_phase": 7,
+        "removed_source_npz": "07_01.npz",
+        "kept_source_npz": "07_04.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 34,
+        "kept_idx": 48,
+        "distance": 0.142593,
+        "removed_score": 0.402294,
+        "kept_score": 0.419296,
+        "removed_phase": 4,
+        "kept_phase": 4,
+        "removed_source_npz": "07_03.npz",
+        "kept_source_npz": "07_03.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 1,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 207,
+        "kept_idx": 71,
+        "distance": 0.211714,
+        "removed_score": 0.396318,
+        "kept_score": 0.413855,
+        "removed_phase": 13,
+        "kept_phase": 13,
+        "removed_source_npz": "07_12.npz",
+        "kept_source_npz": "07_04.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 30,
+        "kept_idx": 14,
+        "distance": 0.108048,
+        "removed_score": 0.394693,
+        "kept_score": 0.411091,
+        "removed_phase": 0,
+        "kept_phase": 0,
+        "removed_source_npz": "07_03.npz",
+        "kept_source_npz": "07_02.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 108,
+        "kept_idx": 202,
+        "distance": 0.165466,
+        "removed_score": 0.37457,
+        "kept_score": 0.410428,
+        "removed_phase": 6,
+        "kept_phase": 6,
+        "removed_source_npz": "07_06.npz",
+        "kept_source_npz": "07_12.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 64,
+        "kept_idx": 202,
+        "distance": 0.180544,
+        "removed_score": 0.353733,
+        "kept_score": 0.410428,
+        "removed_phase": 6,
+        "kept_phase": 6,
+        "removed_source_npz": "07_04.npz",
+        "kept_source_npz": "07_12.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 53,
+        "kept_idx": 23,
+        "distance": 0.165211,
+        "removed_score": 0.373367,
+        "kept_score": 0.40218,
+        "removed_phase": 9,
+        "kept_phase": 9,
+        "removed_source_npz": "07_03.npz",
+        "kept_source_npz": "07_02.npz",
+        "removed_cycle_id": 1,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 39,
+        "kept_idx": 23,
+        "distance": 0.148337,
+        "removed_score": 0.365311,
+        "kept_score": 0.40218,
+        "removed_phase": 9,
+        "kept_phase": 9,
+        "removed_source_npz": "07_03.npz",
+        "kept_source_npz": "07_02.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 98,
+        "kept_idx": 192,
+        "distance": 0.150803,
+        "removed_score": 0.374467,
+        "kept_score": 0.396003,
+        "removed_phase": 12,
+        "kept_phase": 12,
+        "removed_source_npz": "07_05.npz",
+        "kept_source_npz": "07_11.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 1,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 147,
+        "kept_idx": 203,
+        "distance": 0.085714,
+        "removed_score": 0.368023,
+        "kept_score": 0.393326,
+        "removed_phase": 7,
+        "kept_phase": 7,
+        "removed_source_npz": "07_09.npz",
+        "kept_source_npz": "07_12.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 58,
+        "kept_idx": 102,
+        "distance": 0.16801,
+        "removed_score": 0.374379,
+        "kept_score": 0.383288,
+        "removed_phase": 0,
+        "kept_phase": 0,
+        "removed_source_npz": "07_04.npz",
+        "kept_source_npz": "07_06.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 140,
+        "kept_idx": 102,
+        "distance": 0.185004,
+        "removed_score": 0.346047,
+        "kept_score": 0.383288,
+        "removed_phase": 0,
+        "kept_phase": 0,
+        "removed_source_npz": "07_09.npz",
+        "kept_source_npz": "07_06.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 126,
+        "kept_idx": 182,
+        "distance": 0.193541,
+        "removed_score": 0.352974,
+        "kept_score": 0.373151,
+        "removed_phase": 14,
+        "kept_phase": 14,
+        "removed_source_npz": "07_08.npz",
+        "kept_source_npz": "07_11.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 138,
+        "kept_idx": 182,
+        "distance": 0.220261,
+        "removed_score": 0.349832,
+        "kept_score": 0.373151,
+        "removed_phase": 14,
+        "kept_phase": 14,
+        "removed_source_npz": "07_08.npz",
+        "kept_source_npz": "07_11.npz",
+        "removed_cycle_id": 1,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 194,
+        "kept_idx": 182,
+        "distance": 0.170825,
+        "removed_score": 0.347835,
+        "kept_score": 0.373151,
+        "removed_phase": 14,
+        "kept_phase": 14,
+        "removed_source_npz": "07_11.npz",
+        "kept_source_npz": "07_11.npz",
+        "removed_cycle_id": 1,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 168,
+        "kept_idx": 182,
+        "distance": 0.13176,
+        "removed_score": 0.344831,
+        "kept_score": 0.373151,
+        "removed_phase": 14,
+        "kept_phase": 14,
+        "removed_source_npz": "07_10.npz",
+        "kept_source_npz": "07_11.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 152,
+        "kept_idx": 182,
+        "distance": 0.238966,
+        "removed_score": 0.335662,
+        "kept_score": 0.373151,
+        "removed_phase": 14,
+        "kept_phase": 14,
+        "removed_source_npz": "07_09.npz",
+        "kept_source_npz": "07_11.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 100,
+        "kept_idx": 182,
+        "distance": 0.181171,
+        "removed_score": 0.32957,
+        "kept_score": 0.373151,
+        "removed_phase": 14,
+        "kept_phase": 14,
+        "removed_source_npz": "07_05.npz",
+        "kept_source_npz": "07_11.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 57,
+        "kept_idx": 29,
+        "distance": 0.113525,
+        "removed_score": 0.301227,
+        "kept_score": 0.343248,
+        "removed_phase": 15,
+        "kept_phase": 15,
+        "removed_source_npz": "07_03.npz",
+        "kept_source_npz": "07_02.npz",
+        "removed_cycle_id": 1,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 43,
+        "kept_idx": 29,
+        "distance": 0.219141,
+        "removed_score": 0.272097,
+        "kept_score": 0.343248,
+        "removed_phase": 15,
+        "kept_phase": 15,
+        "removed_source_npz": "07_03.npz",
+        "kept_source_npz": "07_02.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 33,
+        "kept_idx": 47,
+        "distance": 0.205777,
+        "removed_score": 0.317605,
+        "kept_score": 0.336246,
+        "removed_phase": 3,
+        "kept_phase": 3,
+        "removed_source_npz": "07_03.npz",
+        "kept_source_npz": "07_03.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 1,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 87,
+        "kept_idx": 73,
+        "distance": 0.178309,
+        "removed_score": 0.311685,
+        "kept_score": 0.33338,
+        "removed_phase": 15,
+        "kept_phase": 15,
+        "removed_source_npz": "07_04.npz",
+        "kept_source_npz": "07_04.npz",
+        "removed_cycle_id": 1,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 38,
+        "kept_idx": 52,
+        "distance": 0.099682,
+        "removed_score": 0.299068,
+        "kept_score": 0.317468,
+        "removed_phase": 8,
+        "kept_phase": 8,
+        "removed_source_npz": "07_03.npz",
+        "kept_source_npz": "07_03.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 1,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 86,
+        "kept_idx": 72,
+        "distance": 0.159383,
+        "removed_score": 0.306769,
+        "kept_score": 0.315041,
+        "removed_phase": 14,
+        "kept_phase": 14,
+        "removed_source_npz": "07_04.npz",
+        "kept_source_npz": "07_04.npz",
+        "removed_cycle_id": 1,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 114,
+        "kept_idx": 208,
+        "distance": 0.228453,
+        "removed_score": 0.299563,
+        "kept_score": 0.311449,
+        "removed_phase": 14,
+        "kept_phase": 14,
+        "removed_source_npz": "07_06.npz",
+        "kept_source_npz": "07_12.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 16,
+        "kept_idx": 46,
+        "distance": 0.177835,
+        "removed_score": 0.298539,
+        "kept_score": 0.304918,
+        "removed_phase": 2,
+        "kept_phase": 2,
+        "removed_source_npz": "07_02.npz",
+        "kept_source_npz": "07_03.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 1,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 32,
+        "kept_idx": 46,
+        "distance": 0.139058,
+        "removed_score": 0.292713,
+        "kept_score": 0.304918,
+        "removed_phase": 2,
+        "kept_phase": 2,
+        "removed_source_npz": "07_03.npz",
+        "kept_source_npz": "07_03.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 1,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 125,
+        "kept_idx": 181,
+        "distance": 0.115388,
+        "removed_score": 0.296139,
+        "kept_score": 0.30318,
+        "removed_phase": 13,
+        "kept_phase": 13,
+        "removed_source_npz": "07_08.npz",
+        "kept_source_npz": "07_11.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 193,
+        "kept_idx": 181,
+        "distance": 0.237477,
+        "removed_score": 0.290571,
+        "kept_score": 0.30318,
+        "removed_phase": 13,
+        "kept_phase": 13,
+        "removed_source_npz": "07_11.npz",
+        "kept_source_npz": "07_11.npz",
+        "removed_cycle_id": 1,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 167,
+        "kept_idx": 181,
+        "distance": 0.15422,
+        "removed_score": 0.285734,
+        "kept_score": 0.30318,
+        "removed_phase": 13,
+        "kept_phase": 13,
+        "removed_source_npz": "07_10.npz",
+        "kept_source_npz": "07_11.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 137,
+        "kept_idx": 181,
+        "distance": 0.127195,
+        "removed_score": 0.276111,
+        "kept_score": 0.30318,
+        "removed_phase": 13,
+        "kept_phase": 13,
+        "removed_source_npz": "07_08.npz",
+        "kept_source_npz": "07_11.npz",
+        "removed_cycle_id": 1,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 151,
+        "kept_idx": 181,
+        "distance": 0.194734,
+        "removed_score": 0.268752,
+        "kept_score": 0.30318,
+        "removed_phase": 13,
+        "kept_phase": 13,
+        "removed_source_npz": "07_09.npz",
+        "kept_source_npz": "07_11.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      },
+      {
+        "removed_idx": 31,
+        "kept_idx": 15,
+        "distance": 0.186473,
+        "removed_score": 0.286314,
+        "kept_score": 0.295797,
+        "removed_phase": 1,
+        "kept_phase": 1,
+        "removed_source_npz": "07_03.npz",
+        "kept_source_npz": "07_02.npz",
+        "removed_cycle_id": 0,
+        "kept_cycle_id": 0,
+        "dedup_pass": "within_phase"
+      }
+    ]
+  },
+  "budget_report": {
+    "input_count": 97,
+    "final_count": 56,
+    "floor_count": 16,
+    "fill_count": 40,
+    "soft_target": 56,
+    "soft_target_reached": true,
+    "hard_max_applied": false,
+    "effective_human_cap_given_phase_budget": 63,
+    "soft_target_feasible": true,
+    "phase_caps_used": {
+      "0": 4,
+      "1": 4,
+      "2": 4,
+      "3": 4,
+      "4": 4,
+      "5": 4,
+      "6": 4,
+      "7": 4,
+      "8": 4,
+      "9": 3,
+      "10": 4,
+      "11": 4,
+      "12": 4,
+      "13": 4,
+      "14": 4,
+      "15": 4
+    },
+    "phase_candidate_counts": {
+      "0": 8,
+      "1": 8,
+      "2": 7,
+      "3": 7,
+      "4": 5,
+      "5": 7,
+      "6": 5,
+      "7": 4,
+      "8": 4,
+      "9": 3,
+      "10": 5,
+      "11": 6,
+      "12": 6,
+      "13": 7,
+      "14": 5,
+      "15": 10
+    },
+    "phase_kept_counts": {
+      "0": 3,
+      "1": 4,
+      "2": 4,
+      "3": 4,
+      "4": 4,
+      "5": 4,
+      "6": 4,
+      "7": 3,
+      "8": 3,
+      "9": 2,
+      "10": 4,
+      "11": 4,
+      "12": 4,
+      "13": 4,
+      "14": 1,
+      "15": 4
+    },
+    "phases_with_no_candidates": [],
+    "phases_emptied_by_dedup": [],
+    "phase_min_coverage_satisfied": true,
+    "phases_covered": 16
+  },
+  "novelty_normalization_info": {
+    "mode": "auto",
+    "method": "percentile_mapping_p10_p90",
+    "lower": 0.92688,
+    "upper": 1.827192
+  },
+  "nearest_stage1_distance_stats": {
+    "mean": 1.370059,
+    "min": 0.759609,
+    "max": 2.066558,
+    "std": 0.329637,
+    "percentiles": {
+      "p5": 0.879912,
+      "p10": 0.92688,
+      "p25": 1.097842,
+      "p50": 1.318786,
+      "p75": 1.655384,
+      "p90": 1.827192,
+      "p95": 1.895005
+    }
+  },
+  "nearest_stage1_distance_percentiles": {
+    "p5": 0.879912,
+    "p10": 0.92688,
+    "p25": 1.097842,
+    "p50": 1.318786,
+    "p75": 1.655384,
+    "p90": 1.827192,
+    "p95": 1.895005
+  },
+  "nearest_stage1_examples": [
+    {
+      "human_idx": 31,
+      "human_meta": {
+        "source_npz": "07_03.npz",
+        "phase_index": 1,
+        "cycle_id": 0,
+        "support_foot": "right"
+      },
+      "nearest_stage1_idx": 144,
+      "stage1_meta": {
+        "param_group_idx": 4,
+        "fsm_state": "STEP_LEFT_WITH_RIGHT_FRONT",
+        "phase_index": 0,
+        "support_foot": "right"
+      },
+      "distance": 0.759609,
+      "key_joint_comparison": {
+        "L_hip_pitch": {
+          "human": -0.6269,
+          "stage1": -0.4036,
+          "diff": -0.2233
+        },
+        "L_hip_roll": {
+          "human": -0.2579,
+          "stage1": -0.0588,
+          "diff": -0.1991
+        },
+        "L_knee": {
+          "human": 0.5037,
+          "stage1": 0.292,
+          "diff": 0.2117
+        },
+        "L_ankle_pitch": {
+          "human": -0.1568,
+          "stage1": -0.05,
+          "diff": -0.1068
+        },
+        "R_hip_pitch": {
+          "human": 0.0889,
+          "stage1": -0.1518,
+          "diff": 0.2407
+        },
+        "R_hip_roll": {
+          "human": 0.5745,
+          "stage1": 0.0588,
+          "diff": 0.5157
+        },
+        "R_knee": {
+          "human": 0.2873,
+          "stage1": 0.2,
+          "diff": 0.0873
+        },
+        "R_ankle_pitch": {
+          "human": -0.1965,
+          "stage1": -0.1,
+          "diff": -0.0965
+        }
+      },
+      "key_joint_abs_diff": {
+        "L_hip_pitch": 0.2233,
+        "L_hip_roll": 0.1991,
+        "L_knee": 0.2117,
+        "L_ankle_pitch": 0.1068,
+        "R_hip_pitch": 0.2407,
+        "R_hip_roll": 0.5157,
+        "R_knee": 0.0873,
+        "R_ankle_pitch": 0.0965
+      }
+    },
+    {
+      "human_idx": 45,
+      "human_meta": {
+        "source_npz": "07_03.npz",
+        "phase_index": 1,
+        "cycle_id": 1,
+        "support_foot": "right"
+      },
+      "nearest_stage1_idx": 144,
+      "stage1_meta": {
+        "param_group_idx": 4,
+        "fsm_state": "STEP_LEFT_WITH_RIGHT_FRONT",
+        "phase_index": 0,
+        "support_foot": "right"
+      },
+      "distance": 0.777969,
+      "key_joint_comparison": {
+        "L_hip_pitch": {
+          "human": -0.6304,
+          "stage1": -0.4036,
+          "diff": -0.2268
+        },
+        "L_hip_roll": {
+          "human": -0.1715,
+          "stage1": -0.0588,
+          "diff": -0.1127
+        },
+        "L_knee": {
+          "human": 0.4478,
+          "stage1": 0.292,
+          "diff": 0.1558
+        },
+        "L_ankle_pitch": {
+          "human": -0.1692,
+          "stage1": -0.05,
+          "diff": -0.1192
+        },
+        "R_hip_pitch": {
+          "human": 0.2036,
+          "stage1": -0.1518,
+          "diff": 0.3555
+        },
+        "R_hip_roll": {
+          "human": 0.5553,
+          "stage1": 0.0588,
+          "diff": 0.4965
+        },
+        "R_knee": {
+          "human": 0.08,
+          "stage1": 0.2,
+          "diff": -0.12
+        },
+        "R_ankle_pitch": {
+          "human": -0.0993,
+          "stage1": -0.1,
+          "diff": 0.0007
+        }
+      },
+      "key_joint_abs_diff": {
+        "L_hip_pitch": 0.2268,
+        "L_hip_roll": 0.1127,
+        "L_knee": 0.1558,
+        "L_ankle_pitch": 0.1192,
+        "R_hip_pitch": 0.3555,
+        "R_hip_roll": 0.4965,
+        "R_knee": 0.12,
+        "R_ankle_pitch": 0.0007
+      }
+    },
+    {
+      "human_idx": 15,
+      "human_meta": {
+        "source_npz": "07_02.npz",
+        "phase_index": 1,
+        "cycle_id": 0,
+        "support_foot": "right"
+      },
+      "nearest_stage1_idx": 144,
+      "stage1_meta": {
+        "param_group_idx": 4,
+        "fsm_state": "STEP_LEFT_WITH_RIGHT_FRONT",
+        "phase_index": 0,
+        "support_foot": "right"
+      },
+      "distance": 0.803017,
+      "key_joint_comparison": {
+        "L_hip_pitch": {
+          "human": -0.6696,
+          "stage1": -0.4036,
+          "diff": -0.266
+        },
+        "L_hip_roll": {
+          "human": -0.1544,
+          "stage1": -0.0588,
+          "diff": -0.0956
+        },
+        "L_knee": {
+          "human": 0.5381,
+          "stage1": 0.292,
+          "diff": 0.2461
+        },
+        "L_ankle_pitch": {
+          "human": -0.21,
+          "stage1": -0.05,
+          "diff": -0.16
+        },
+        "R_hip_pitch": {
+          "human": 0.1732,
+          "stage1": -0.1518,
+          "diff": 0.325
+        },
+        "R_hip_roll": {
+          "human": 0.539,
+          "stage1": 0.0588,
+          "diff": 0.4802
+        },
+        "R_knee": {
+          "human": 0.2457,
+          "stage1": 0.2,
+          "diff": 0.0457
+        },
+        "R_ankle_pitch": {
+          "human": -0.1737,
+          "stage1": -0.1,
+          "diff": -0.0737
+        }
+      },
+      "key_joint_abs_diff": {
+        "L_hip_pitch": 0.266,
+        "L_hip_roll": 0.0956,
+        "L_knee": 0.2461,
+        "L_ankle_pitch": 0.16,
+        "R_hip_pitch": 0.325,
+        "R_hip_roll": 0.4802,
+        "R_knee": 0.0457,
+        "R_ankle_pitch": 0.0737
+      }
+    },
+    {
+      "human_idx": 46,
+      "human_meta": {
+        "source_npz": "07_03.npz",
+        "phase_index": 2,
+        "cycle_id": 1,
+        "support_foot": "right"
+      },
+      "nearest_stage1_idx": 16,
+      "stage1_meta": {
+        "param_group_idx": 0,
+        "fsm_state": "STEP_LEFT_WITH_RIGHT_FRONT",
+        "phase_index": 0,
+        "support_foot": "right"
+      },
+      "distance": 0.837872,
+      "key_joint_comparison": {
+        "L_hip_pitch": {
+          "human": -0.5837,
+          "stage1": -0.3273,
+          "diff": -0.2564
+        },
+        "L_hip_roll": {
+          "human": -0.1961,
+          "stage1": -0.06,
+          "diff": -0.1361
+        },
+        "L_knee": {
+          "human": 0.5215,
+          "stage1": 0.3,
+          "diff": 0.2215
+        },
+        "L_ankle_pitch": {
+          "human": -0.1009,
+          "stage1": -0.05,
+          "diff": -0.0509
+        },
+        "R_hip_pitch": {
+          "human": 0.307,
+          "stage1": -0.1136,
+          "diff": 0.4207
+        },
+        "R_hip_roll": {
+          "human": 0.5171,
+          "stage1": 0.06,
+          "diff": 0.4571
+        },
+        "R_knee": {
+          "human": 0.08,
+          "stage1": 0.2,
+          "diff": -0.12
+        },
+        "R_ankle_pitch": {
+          "human": -0.0128,
+          "stage1": -0.1,
+          "diff": 0.0872
+        }
+      },
+      "key_joint_abs_diff": {
+        "L_hip_pitch": 0.2564,
+        "L_hip_roll": 0.1361,
+        "L_knee": 0.2215,
+        "L_ankle_pitch": 0.0509,
+        "R_hip_pitch": 0.4207,
+        "R_hip_roll": 0.4571,
+        "R_knee": 0.12,
+        "R_ankle_pitch": 0.0872
+      }
+    },
+    {
+      "human_idx": 32,
+      "human_meta": {
+        "source_npz": "07_03.npz",
+        "phase_index": 2,
+        "cycle_id": 0,
+        "support_foot": "right"
+      },
+      "nearest_stage1_idx": 144,
+      "stage1_meta": {
+        "param_group_idx": 4,
+        "fsm_state": "STEP_LEFT_WITH_RIGHT_FRONT",
+        "phase_index": 0,
+        "support_foot": "right"
+      },
+      "distance": 0.839141,
+      "key_joint_comparison": {
+        "L_hip_pitch": {
+          "human": -0.5993,
+          "stage1": -0.4036,
+          "diff": -0.1957
+        },
+        "L_hip_roll": {
+          "human": -0.1832,
+          "stage1": -0.0588,
+          "diff": -0.1244
+        },
+        "L_knee": {
+          "human": 0.4754,
+          "stage1": 0.292,
+          "diff": 0.1834
+        },
+        "L_ankle_pitch": {
+          "human": -0.1853,
+          "stage1": -0.05,
+          "diff": -0.1353
+        },
+        "R_hip_pitch": {
+          "human": 0.2789,
+          "stage1": -0.1518,
+          "diff": 0.4307
+        },
+        "R_hip_roll": {
+          "human": 0.5585,
+          "stage1": 0.0588,
+          "diff": 0.4997
+        },
+        "R_knee": {
+          "human": 0.08,
+          "stage1": 0.2,
+          "diff": -0.12
+        },
+        "R_ankle_pitch": {
+          "human": -0.0496,
+          "stage1": -0.1,
+          "diff": 0.0504
+        }
+      },
+      "key_joint_abs_diff": {
+        "L_hip_pitch": 0.1957,
+        "L_hip_roll": 0.1244,
+        "L_knee": 0.1834,
+        "L_ankle_pitch": 0.1353,
+        "R_hip_pitch": 0.4307,
+        "R_hip_roll": 0.4997,
+        "R_knee": 0.12,
+        "R_ankle_pitch": 0.0504
+      }
+    },
+    {
+      "human_idx": 47,
+      "human_meta": {
+        "source_npz": "07_03.npz",
+        "phase_index": 3,
+        "cycle_id": 1,
+        "support_foot": "right"
+      },
+      "nearest_stage1_idx": 64,
+      "stage1_meta": {
+        "param_group_idx": 2,
+        "fsm_state": "STEP_RIGHT_WITH_LEFT_FRONT",
+        "phase_index": 0,
+        "support_foot": "left"
+      },
+      "distance": 0.842134,
+      "key_joint_comparison": {
+        "L_hip_pitch": {
+          "human": -0.5061,
+          "stage1": -0.3182,
+          "diff": -0.1879
+        },
+        "L_hip_roll": {
+          "human": -0.3715,
+          "stage1": 0.06,
+          "diff": -0.4315
+        },
+        "L_knee": {
+          "human": 0.562,
+          "stage1": 0.2,
+          "diff": 0.362
+        },
+        "L_ankle_pitch": {
+          "human": -0.0225,
+          "stage1": -0.1,
+          "diff": 0.0775
+        },
+        "R_hip_pitch": {
+          "human": 0.1595,
+          "stage1": 0.0,
+          "diff": 0.1595
+        },
+        "R_hip_roll": {
+          "human": 0.391,
+          "stage1": -0.06,
+          "diff": 0.451
+        },
+        "R_knee": {
+          "human": 0.6443,
+          "stage1": 0.5275,
+          "diff": 0.1168
+        },
+        "R_ankle_pitch": {
+          "human": 0.0949,
+          "stage1": 0.135,
+          "diff": -0.0401
+        }
+      },
+      "key_joint_abs_diff": {
+        "L_hip_pitch": 0.1879,
+        "L_hip_roll": 0.4315,
+        "L_knee": 0.362,
+        "L_ankle_pitch": 0.0775,
+        "R_hip_pitch": 0.1595,
+        "R_hip_roll": 0.451,
+        "R_knee": 0.1168,
+        "R_ankle_pitch": 0.0401
+      }
+    },
+    {
+      "human_idx": 72,
+      "human_meta": {
+        "source_npz": "07_04.npz",
+        "phase_index": 14,
+        "cycle_id": 0,
+        "support_foot": "left"
+      },
+      "nearest_stage1_idx": 144,
+      "stage1_meta": {
+        "param_group_idx": 4,
+        "fsm_state": "STEP_LEFT_WITH_RIGHT_FRONT",
+        "phase_index": 0,
+        "support_foot": "right"
+      },
+      "distance": 0.842402,
+      "key_joint_comparison": {
+        "L_hip_pitch": {
+          "human": -0.6891,
+          "stage1": -0.4036,
+          "diff": -0.2855
+        },
+        "L_hip_roll": {
+          "human": -0.201,
+          "stage1": -0.0588,
+          "diff": -0.1422
+        },
+        "L_knee": {
+          "human": 0.5435,
+          "stage1": 0.292,
+          "diff": 0.2515
+        },
+        "L_ankle_pitch": {
+          "human": -0.2199,
+          "stage1": -0.05,
+          "diff": -0.1699
+        },
+        "R_hip_pitch": {
+          "human": 0.0829,
+          "stage1": -0.1518,
+          "diff": 0.2347
+        },
+        "R_hip_roll": {
+          "human": 0.531,
+          "stage1": 0.0588,
+          "diff": 0.4722
+        },
+        "R_knee": {
+          "human": 0.3416,
+          "stage1": 0.2,
+          "diff": 0.1416
+        },
+        "R_ankle_pitch": {
+          "human": -0.3494,
+          "stage1": -0.1,
+          "diff": -0.2494
+        }
+      },
+      "key_joint_abs_diff": {
+        "L_hip_pitch": 0.2855,
+        "L_hip_roll": 0.1422,
+        "L_knee": 0.2515,
+        "L_ankle_pitch": 0.1699,
+        "R_hip_pitch": 0.2347,
+        "R_hip_roll": 0.4722,
+        "R_knee": 0.1416,
+        "R_ankle_pitch": 0.2494
+      }
+    },
+    {
+      "human_idx": 33,
+      "human_meta": {
+        "source_npz": "07_03.npz",
+        "phase_index": 3,
+        "cycle_id": 0,
+        "support_foot": "right"
+      },
+      "nearest_stage1_idx": 16,
+      "stage1_meta": {
+        "param_group_idx": 0,
+        "fsm_state": "STEP_LEFT_WITH_RIGHT_FRONT",
+        "phase_index": 0,
+        "support_foot": "right"
+      },
+      "distance": 0.855035,
+      "key_joint_comparison": {
+        "L_hip_pitch": {
+          "human": -0.5226,
+          "stage1": -0.3273,
+          "diff": -0.1953
+        },
+        "L_hip_roll": {
+          "human": -0.3522,
+          "stage1": -0.06,
+          "diff": -0.2922
+        },
+        "L_knee": {
+          "human": 0.5621,
+          "stage1": 0.3,
+          "diff": 0.2621
+        },
+        "L_ankle_pitch": {
+          "human": -0.0282,
+          "stage1": -0.05,
+          "diff": 0.0218
+        },
+        "R_hip_pitch": {
+          "human": 0.2188,
+          "stage1": -0.1136,
+          "diff": 0.3324
+        },
+        "R_hip_roll": {
+          "human": 0.4329,
+          "stage1": 0.06,
+          "diff": 0.3729
+        },
+        "R_knee": {
+          "human": 0.4931,
+          "stage1": 0.2,
+          "diff": 0.2931
+        },
+        "R_ankle_pitch": {
+          "human": 0.0845,
+          "stage1": -0.1,
+          "diff": 0.1845
+        }
+      },
+      "key_joint_abs_diff": {
+        "L_hip_pitch": 0.1953,
+        "L_hip_roll": 0.2922,
+        "L_knee": 0.2621,
+        "L_ankle_pitch": 0.0218,
+        "R_hip_pitch": 0.3324,
+        "R_hip_roll": 0.3729,
+        "R_knee": 0.2931,
+        "R_ankle_pitch": 0.1845
+      }
+    },
+    {
+      "human_idx": 86,
+      "human_meta": {
+        "source_npz": "07_04.npz",
+        "phase_index": 14,
+        "cycle_id": 1,
+        "support_foot": "left"
+      },
+      "nearest_stage1_idx": 144,
+      "stage1_meta": {
+        "param_group_idx": 4,
+        "fsm_state": "STEP_LEFT_WITH_RIGHT_FRONT",
+        "phase_index": 0,
+        "support_foot": "right"
+      },
+      "distance": 0.857303,
+      "key_joint_comparison": {
+        "L_hip_pitch": {
+          "human": -0.7102,
+          "stage1": -0.4036,
+          "diff": -0.3066
+        },
+        "L_hip_roll": {
+          "human": -0.2761,
+          "stage1": -0.0588,
+          "diff": -0.2173
+        },
+        "L_knee": {
+          "human": 0.578,
+          "stage1": 0.292,
+          "diff": 0.286
+        },
+        "L_ankle_pitch": {
+          "human": -0.2139,
+          "stage1": -0.05,
+          "diff": -0.1639
+        },
+        "R_hip_pitch": {
+          "human": 0.0043,
+          "stage1": -0.1518,
+          "diff": 0.1562
+        },
+        "R_hip_roll": {
+          "human": 0.5142,
+          "stage1": 0.0588,
+          "diff": 0.4554
+        },
+        "R_knee": {
+          "human": 0.4083,
+          "stage1": 0.2,
+          "diff": 0.2083
+        },
+        "R_ankle_pitch": {
+          "human": -0.3231,
+          "stage1": -0.1,
+          "diff": -0.2231
+        }
+      },
+      "key_joint_abs_diff": {
+        "L_hip_pitch": 0.3066,
+        "L_hip_roll": 0.2173,
+        "L_knee": 0.286,
+        "L_ankle_pitch": 0.1639,
+        "R_hip_pitch": 0.1562,
+        "R_hip_roll": 0.4554,
+        "R_knee": 0.2083,
+        "R_ankle_pitch": 0.2231
+      }
+    },
+    {
+      "human_idx": 87,
+      "human_meta": {
+        "source_npz": "07_04.npz",
+        "phase_index": 15,
+        "cycle_id": 1,
+        "support_foot": "left"
+      },
+      "nearest_stage1_idx": 144,
+      "stage1_meta": {
+        "param_group_idx": 4,
+        "fsm_state": "STEP_LEFT_WITH_RIGHT_FRONT",
+        "phase_index": 0,
+        "support_foot": "right"
+      },
+      "distance": 0.874615,
+      "key_joint_comparison": {
+        "L_hip_pitch": {
+          "human": -0.7316,
+          "stage1": -0.4036,
+          "diff": -0.3279
+        },
+        "L_hip_roll": {
+          "human": -0.1574,
+          "stage1": -0.0588,
+          "diff": -0.0986
+        },
+        "L_knee": {
+          "human": 0.4661,
+          "stage1": 0.292,
+          "diff": 0.1741
+        },
+        "L_ankle_pitch": {
+          "human": -0.248,
+          "stage1": -0.05,
+          "diff": -0.198
+        },
+        "R_hip_pitch": {
+          "human": 0.2324,
+          "stage1": -0.1518,
+          "diff": 0.3843
+        },
+        "R_hip_roll": {
+          "human": 0.5352,
+          "stage1": 0.0588,
+          "diff": 0.4764
+        },
+        "R_knee": {
+          "human": 0.08,
+          "stage1": 0.2,
+          "diff": -0.12
+        },
+        "R_ankle_pitch": {
+          "human": -0.2144,
+          "stage1": -0.1,
+          "diff": -0.1144
+        }
+      },
+      "key_joint_abs_diff": {
+        "L_hip_pitch": 0.3279,
+        "L_hip_roll": 0.0986,
+        "L_knee": 0.1741,
+        "L_ankle_pitch": 0.198,
+        "R_hip_pitch": 0.3843,
+        "R_hip_roll": 0.4764,
+        "R_knee": 0.12,
+        "R_ankle_pitch": 0.1144
+      }
+    }
+  ],
+  "stage1_human_overlap_assessment": "well_separated",
+  "metric_config": {
+    "distance_type": "weighted L2 over key joints",
+    "formula": "sqrt(sum(w_i * (a_i - b_i)^2))",
+    "key_joints": [
+      "L_hip_pitch",
+      "L_hip_roll",
+      "L_knee",
+      "L_ankle_pitch",
+      "R_hip_pitch",
+      "R_hip_roll",
+      "R_knee",
+      "R_ankle_pitch"
+    ],
+    "key_joint_indices": [
+      0,
+      1,
+      3,
+      4,
+      6,
+      7,
+      9,
+      10
+    ],
+    "weights": [
+      1.5,
+      1.0,
+      1.5,
+      1.5,
+      1.5,
+      1.0,
+      1.5,
+      1.5
+    ],
+    "stage1_vs_human_threshold": 0.4,
+    "human_vs_human_within_phase_threshold": 0.25,
+    "human_vs_human_cross_phase_threshold": 0.0
+  },
+  "score_stats": {
+    "quality_score": {
+      "mean": 0.79158,
+      "min": 0.677562,
+      "max": 0.862162
+    },
+    "novelty_score": {
+      "mean": 0.66907,
+      "min": 0.219354,
+      "max": 1.0
+    },
+    "joint_margin_penalty": {
+      "mean": 0.626053,
+      "min": 0.238011,
+      "max": 0.842185
+    },
+    "limit_penalty": {
+      "mean": 0.313026,
+      "min": 0.119005,
+      "max": 0.421093
+    },
+    "final_score": {
+      "mean": 0.533906,
+      "min": 0.40218,
+      "max": 0.665288
+    }
+  }
+}

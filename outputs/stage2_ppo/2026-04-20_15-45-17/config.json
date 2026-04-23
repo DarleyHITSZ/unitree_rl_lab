@@ -1,0 +1,29 @@
+{
+  "task": "Unitree-G1-29dof-Stage2-PPO",
+  "num_envs": 4096,
+  "obs_dim": 96,
+  "num_discrete_actions": 216,
+  "num_steps_per_env": 24,
+  "lr": 0.0003,
+  "gamma": 0.99,
+  "gae_lambda": 0.95,
+  "clip_ratio": 0.2,
+  "entropy_coef": 0.01,
+  "value_coef": 0.5,
+  "max_grad_norm": 1.0,
+  "update_epochs": 5,
+  "num_mini_batches": 4,
+  "actor_hidden_dims": [
+    256,
+    256,
+    128
+  ],
+  "critic_hidden_dims": [
+    256,
+    256,
+    128
+  ],
+  "activation": "elu",
+  "pose_library_path": "outputs/pose_library/pose_library_expanded.npy",
+  "seed": 42
+}

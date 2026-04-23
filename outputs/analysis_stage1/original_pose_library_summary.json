@@ -1,0 +1,83 @@
+{
+  "total_poses": 160,
+  "num_parameter_groups": 5,
+  "num_core_states": 2,
+  "phases_per_state": 16,
+  "poses_per_group": {
+    "0": 32,
+    "1": 32,
+    "2": 32,
+    "3": 32,
+    "4": 32
+  },
+  "phase_pose_counts": {
+    "0": 10,
+    "1": 10,
+    "2": 10,
+    "3": 10,
+    "4": 10,
+    "5": 10,
+    "6": 10,
+    "7": 10,
+    "8": 10,
+    "9": 10,
+    "10": 10,
+    "11": 10,
+    "12": 10,
+    "13": 10,
+    "14": 10,
+    "15": 10
+  },
+  "parameter_groups": [
+    {
+      "param_group_idx": 0,
+      "rank": 1,
+      "HL": 22,
+      "Ls": 45,
+      "Lswb": 40,
+      "Lforward": 10,
+      "total_reward": 15.7489,
+      "num_poses": 32
+    },
+    {
+      "param_group_idx": 1,
+      "rank": 2,
+      "HL": 20,
+      "Ls": 44,
+      "Lswb": 37,
+      "Lforward": 6,
+      "total_reward": 15.5477,
+      "num_poses": 32
+    },
+    {
+      "param_group_idx": 2,
+      "rank": 3,
+      "HL": 37,
+      "Ls": 45,
+      "Lswb": 40,
+      "Lforward": 37,
+      "total_reward": 14.7156,
+      "num_poses": 32
+    },
+    {
+      "param_group_idx": 3,
+      "rank": 4,
+      "HL": 20,
+      "Ls": 53,
+      "Lswb": 39,
+      "Lforward": 15,
+      "total_reward": 14.7039,
+      "num_poses": 32
+    },
+    {
+      "param_group_idx": 4,
+      "rank": 5,
+      "HL": 20,
+      "Ls": 59,
+      "Lswb": 39,
+      "Lforward": 13,
+      "total_reward": 14.487,
+      "num_poses": 32
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "uniform_action_space_size": 2149056,
+  "dynamic_action_space_size_before_tightening": 518400,
+  "dynamic_action_space_size_after_tightening": 193648,
+  "action_space_reduction_percent": 90.99,
+  "uniform_convergence_episodes": null,
+  "dynamic_convergence_episodes": null,
+  "uniform_search_time_only": 189.31,
+  "dynamic_search_time_only": 197.52,
+  "total_time_including_scan": 325.62,
+  "uniform_best_total_reward": 15.0526,
+  "dynamic_best_total_reward": 15.7489,
+  "uniform_best_forward_velocity": 0.334507,
+  "dynamic_best_forward_velocity": 0.309949,
+  "uniform_best_lateral_offset": 0.001873,
+  "dynamic_best_lateral_offset": 0.001225,
+  "uniform_best_time_to_fall": 1.2,
+  "dynamic_best_time_to_fall": 1.32,
+  "uniform_best_early_forward_velocity": 0.22211,
+  "dynamic_best_early_forward_velocity": 0.158165,
+  "uniform_success_rate": 0.0,
+  "dynamic_success_rate": 0.0,
+  "uniform_best_params": {
+    "HL": 25,
+    "Ls": 47,
+    "Lswb": 38,
+    "Lforward": 36
+  },
+  "dynamic_best_params": {
+    "HL": 22,
+    "Ls": 45,
+    "Lswb": 40,
+    "Lforward": 10
+  },
+  "target_reward_threshold": 15.0,
+  "target_forward_velocity_threshold": 0.33,
+  "uniform_episodes_to_target_reward": 48,
+  "dynamic_episodes_to_target_reward": 28,
+  "uniform_episodes_to_target_velocity": 48,
+  "dynamic_episodes_to_target_velocity": null,
+  "efficiency_improvement_percent": 4.63,
+  "convergence_criteria": {
+    "window": 20,
+    "metric": "coefficient_of_variation",
+    "threshold": 0.05,
+    "description": "CV of total_reward over sliding 20-episode window < 5%"
+  },
+  "dynamic_search_assessment": "space_reduced_and_target_reached_faster"
+}

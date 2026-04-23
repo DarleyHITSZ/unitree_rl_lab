@@ -1,0 +1,67 @@
+[
+  {
+    "rank": 1,
+    "HL": 20,
+    "Ls": 52,
+    "Lswb": 40,
+    "Lforward": 18,
+    "avg_forward_velocity": 0.319155,
+    "avg_lateral_offset": 0.001024,
+    "alive_time": 1.26,
+    "success": false,
+    "total_reward": 15.3382,
+    "score": 15.3382
+  },
+  {
+    "rank": 2,
+    "HL": 20,
+    "Ls": 48,
+    "Lswb": 37,
+    "Lforward": 12,
+    "avg_forward_velocity": 0.305157,
+    "avg_lateral_offset": 0.00095,
+    "alive_time": 1.28,
+    "success": false,
+    "total_reward": 14.8998,
+    "score": 14.8998
+  },
+  {
+    "rank": 3,
+    "HL": 24,
+    "Ls": 48,
+    "Lswb": 23,
+    "Lforward": 40,
+    "avg_forward_velocity": 0.329069,
+    "avg_lateral_offset": 0.002023,
+    "alive_time": 1.18,
+    "success": false,
+    "total_reward": 14.3724,
+    "score": 14.3724
+  },
+  {
+    "rank": 4,
+    "HL": 25,
+    "Ls": 41,
+    "Lswb": 35,
+    "Lforward": 6,
+    "avg_forward_velocity": 0.301444,
+    "avg_lateral_offset": 0.010418,
+    "alive_time": 1.36,
+    "success": false,
+    "total_reward": 14.0297,
+    "score": 14.0297
+  },
+  {
+    "rank": 5,
+    "HL": 47,
+    "Ls": 41,
+    "Lswb": 33,
+    "Lforward": 39,
+    "avg_forward_velocity": 0.322042,
+    "avg_lateral_offset": 0.002016,
+    "alive_time": 1.18,
+    "success": false,
+    "total_reward": 13.9591,
+    "score": 13.9591
+  }
+]

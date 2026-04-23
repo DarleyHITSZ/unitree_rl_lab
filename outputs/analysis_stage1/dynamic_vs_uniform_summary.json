@@ -1,0 +1,22 @@
+{
+  "uniform_action_space_size": 2149056,
+  "dynamic_action_space_size_before_tightening": 518400,
+  "dynamic_action_space_size_after_tightening": 193648,
+  "action_space_reduction_percent": 90.99,
+  "uniform_best_total_reward": 15.0526,
+  "dynamic_best_total_reward": 15.7489,
+  "uniform_best_forward_velocity": 0.334507,
+  "dynamic_best_forward_velocity": 0.309949,
+  "uniform_best_lateral_offset": 0.001873,
+  "dynamic_best_lateral_offset": 0.001225,
+  "uniform_best_time_to_fall": 1.2,
+  "dynamic_best_time_to_fall": 1.32,
+  "uniform_episodes_to_target_reward": 48,
+  "dynamic_episodes_to_target_reward": 28,
+  "uniform_episodes_to_target_velocity": 48,
+  "dynamic_episodes_to_target_velocity": null,
+  "uniform_search_time_only_s": 189.31,
+  "dynamic_search_time_only_s": 197.52,
+  "dynamic_total_time_including_scan_s": 325.62,
+  "efficiency_improvement_percent": 4.63
+}

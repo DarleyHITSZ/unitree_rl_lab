@@ -75,5 +75,3 @@ datasets
 *.npz
 
 # Scripts
-
-scripts/*.sh

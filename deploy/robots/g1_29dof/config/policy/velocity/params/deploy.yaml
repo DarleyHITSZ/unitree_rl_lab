@@ -12,7 +12,7 @@ default_joint_pos: [-0.1, -0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.3, 0.3
 commands:
   base_velocity:
     ranges:
-      lin_vel_x: [0.9, 1.0]
+      lin_vel_x: [1.0, 1.0]
       lin_vel_y: [0.0, 0.0]
       ang_vel_z: [0.0, 0.0]
       heading: null

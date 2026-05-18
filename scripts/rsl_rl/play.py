@@ -30,6 +30,12 @@ parser.add_argument(
     help="Use the pre-trained checkpoint from Nucleus.",
 )
 parser.add_argument("--real-time", action="store_true", default=False, help="Run in real-time, if possible.")
+parser.add_argument(
+    "--num_episodes",
+    type=int,
+    default=None,
+    help="Number of episodes to evaluate in headless mode. Defaults to num_envs.",
+)
 # append RSL-RL cli arguments
 cli_args.add_rsl_rl_args(parser)
 # append AppLauncher cli args
@@ -46,6 +52,8 @@ simulation_app = app_launcher.app
 """Rest everything follows."""
 
 import gymnasium as gym
+import json
+import numpy as np
 import os
 import time
 import torch
@@ -56,7 +64,7 @@ import isaaclab_tasks  # noqa: F401
 from isaaclab.envs import DirectMARLEnv, multi_agent_to_single_agent
 from isaaclab.utils.assets import retrieve_file_path
 from isaaclab.utils.dict import print_dict
-from isaaclab_rl.utils.pretrained_checkpoint import get_published_pretrained_checkpoint
+from isaaclab.utils.pretrained_checkpoint import get_published_pretrained_checkpoint
 from isaaclab_rl.rsl_rl import RslRlOnPolicyRunnerCfg, RslRlVecEnvWrapper, export_policy_as_jit, export_policy_as_onnx
 from isaaclab_tasks.utils import get_checkpoint_path
 
@@ -157,7 +165,18 @@ def main():
     obs = env.get_observations()
     if version("rsl-rl-lib").startswith("2.3."):
         obs, _ = env.get_observations()
+    headless: bool = args_cli.headless  # type: ignore[reportUnknownVariableType]
     timestep = 0
+    # evaluation metrics (always allocated; only populated/exported in headless mode)
+    num_episodes = args_cli.num_episodes if args_cli.num_episodes is not None else env.num_envs
+    robot = env.unwrapped.scene["robot"]
+    ep_forward_vel_sum = torch.zeros(env.num_envs, device=env.unwrapped.device)
+    ep_lateral_drift_sum = torch.zeros(env.num_envs, device=env.unwrapped.device)
+    ep_step_count = torch.zeros(env.num_envs, dtype=torch.long, device=env.unwrapped.device)
+    completed = 0
+    all_forward_vels: list[float] = []
+    all_lateral_drifts: list[float] = []
+    all_successes: list[bool] = []
     # simulate environment
     while simulation_app.is_running():
         start_time = time.time()
@@ -166,7 +185,28 @@ def main():
             # agent stepping
             actions = policy(obs)
             # env stepping
-            obs, _, _, _ = env.step(actions)
+            obs, rew, dones, extras = env.step(actions)
+        if headless:
+            ep_forward_vel_sum += robot.data.root_lin_vel_b[:, 0].abs()
+            ep_lateral_drift_sum += robot.data.root_lin_vel_b[:, 1].abs()
+            ep_step_count += 1
+
+            reset_ids = dones.nonzero(as_tuple=False).squeeze(-1)
+            if len(reset_ids) > 0:
+                for rid in reset_ids:
+                    if completed >= num_episodes:
+                        break
+                    steps = ep_step_count[rid].item()
+                    if steps > 0:
+                        all_forward_vels.append(ep_forward_vel_sum[rid].item() / steps)
+                        all_lateral_drifts.append(ep_lateral_drift_sum[rid].item() / steps)
+                        all_successes.append(not bool(env.unwrapped.reset_terminated[rid].item()))
+                        completed += 1
+                ep_forward_vel_sum[reset_ids] = 0.0
+                ep_lateral_drift_sum[reset_ids] = 0.0
+                ep_step_count[reset_ids] = 0
+            if completed >= num_episodes:
+                break
         if args_cli.video:
             timestep += 1
             # Exit the play loop after recording one video
@@ -177,6 +217,34 @@ def main():
         sleep_time = dt - (time.time() - start_time)
         if args_cli.real_time and sleep_time > 0:
             time.sleep(sleep_time)
+
+    # export evaluation metrics
+    if headless and len(all_forward_vels) > 0:
+        fwd_arr = np.array(all_forward_vels)
+        lat_arr = np.array(all_lateral_drifts)
+        succ_arr = np.array(all_successes, dtype=float)
+        metrics = {
+            "num_episodes": int(len(all_forward_vels)),
+            "mean_forward_vel": float(fwd_arr.mean()),
+            "std_forward_vel": float(fwd_arr.std()),
+            "mean_lateral_drift_vel": float(lat_arr.mean()),
+            "std_lateral_drift_vel": float(lat_arr.std()),
+            "success_rate": float(succ_arr.mean()),
+        }
+        print(f"\n{'='*60}")
+        print("  Evaluation Results")
+        print(f"{'='*60}")
+        print(f"  Episodes:               {metrics['num_episodes']}")
+        print(f"  Mean Forward Vel:        {metrics['mean_forward_vel']:.4f} +/- {metrics['std_forward_vel']:.4f} m/s")
+        print(
+            f"  Mean Lateral Drift Vel:  {metrics['mean_lateral_drift_vel']:.4f} +/- {metrics['std_lateral_drift_vel']:.4f} m/s"
+        )
+        print(f"  Success Rate:            {metrics['success_rate']:.2%}")
+        print(f"{'='*60}")
+        results_path = os.path.join(os.path.dirname(resume_path), "evaluation_results.json")
+        with open(results_path, "w") as f:
+            json.dump(metrics, f, indent=2)
+        print(f"[INFO] Results saved to: {results_path}")
 
     # close the simulator
     env.close()

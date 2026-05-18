@@ -3,9 +3,9 @@
 
 # ======================== 可配置参数 ========================
 # 任务名称
-TASK_NAME="Unitree-G1-29dof-AdaptiveVelocity"
+TASK_NAME="Unitree-G1-29dof-VelocitySlope"
 # 训练迭代数
-MAX_ITERATIONS=20000
+MAX_ITERATIONS=10
 # 指定GPU设备
 DEVICE="cuda:0"
 # ======================== 执行训练命令 ========================

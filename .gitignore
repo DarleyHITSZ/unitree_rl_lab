@@ -75,3 +75,5 @@ datasets
 *.npz
 
 # Scripts
+
+!source/unitree_rl_lab/unitree_rl_lab/assets/robots/h1_2/meshes/*.STL

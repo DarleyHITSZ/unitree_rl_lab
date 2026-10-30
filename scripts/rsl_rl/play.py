@@ -65,6 +65,7 @@ from isaaclab.envs import DirectMARLEnv, multi_agent_to_single_agent
 from isaaclab.utils.assets import retrieve_file_path
 from isaaclab.utils.dict import print_dict
 from isaaclab_rl.rsl_rl import RslRlOnPolicyRunnerCfg, RslRlVecEnvWrapper, export_policy_as_jit, export_policy_as_onnx
+from isaaclab_rl.utils.pretrained_checkpoint import get_published_pretrained_checkpoint
 from isaaclab_tasks.utils import get_checkpoint_path
 
 import unitree_rl_lab.tasks  # noqa: F401
@@ -185,6 +186,7 @@ def main():
             actions = policy(obs)
             # env stepping
             obs, rew, dones, extras = env.step(actions)
+            policy_nn.reset(dones)
         if headless:
             ep_forward_vel_sum += robot.data.root_lin_vel_b[:, 0].abs()
             ep_lateral_drift_sum += robot.data.root_lin_vel_b[:, 1].abs()

@@ -1,9 +1,64 @@
-# MSLPO — 多阶段步态姿态优化
+# Unitree RL Lab — H1_2 训练与 G1 MSLPO
 
-基于 IsaacLab / Isaac Sim 的 Unitree G1-29dof 双足步态强化学习框架。
+基于 IsaacLab / Isaac Sim，包含 H1_2 平地速度跟踪训练，以及 G1-29dof 的 SIMBICON 搜索、姿态库生成和分类 PPO 训练。
 
-**第一阶段** 搜索最优 SIMBICON 步态参数并构建离散姿态库。
-**第二阶段** 在姿态库上训练分类 PPO 策略。
+## H1_2 快速开始
+
+所有仿真、训练和演示均使用已配置的 conda 环境 `env_isaacsim`，在仓库根目录执行：
+
+```bash
+conda activate env_isaacsim
+./unitree_rl_lab.sh -l
+./unitree_rl_lab.sh -t --task Unitree-H1-2-Velocity --num_envs 512
+```
+
+`--num_envs` 可以省略，省略时使用环境配置的默认值 **4096**；上述 **512** 已在本机 8 GB 显存上完成短程验证。
+需要固定自己的默认数量时，修改 `source/unitree_rl_lab/unitree_rl_lab/tasks/locomotion/robots/h1_2/velocity_env_cfg.py` 中 `RobotEnvCfg.scene.num_envs`。命令行参数优先于配置默认值。
+
+| 项目 | 当前 H1_2 配置 |
+|---|---|
+| 任务名 | `Unitree-H1-2-Velocity` |
+| 来源 | 宇树官方 mjlab H1_2 平地方案，迁移至 IsaacLab |
+| 控制 | 27 关节：双腿 12、躯干 1、双臂及腕部 14 |
+| 观测 | Actor 92 维、Critic 107 维，单帧 |
+| 策略 | MLP PPO，Actor/Critic 均为 `[512, 256, 128]`，ELU，开启观测归一化 |
+| 仿真 / 控制 | 0.005 秒 × 降采样 4，50 Hz 控制 |
+| 训练 | 默认 10001 次更新，每 100 次保存，随机种子 42 |
+| 检查点目录 | `logs/rsl_rl/h1_2/<时间戳>/` |
+
+训练生成检查点后，可以加载最新结果演示或恢复训练：
+
+```bash
+./unitree_rl_lab.sh -p --task Unitree-H1-2-Velocity --num_envs 4
+./unitree_rl_lab.sh -t --task Unitree-H1-2-Velocity --num_envs 512 --resume
+```
+
+演示默认使用 32 个环境；上例覆盖为 4 个。演示配置关闭观测噪声、推扰和课程，保留启动随机化，并使用近乎无限的回合时长。
+旧的 12 关节 LSTM 检查点与当前方案不兼容。本次迁移的旧模型和短程验证产物已清理，首次使用需重新训练。
+
+当前机器人 MJCF、28 个必需网格及来源许可证均包含在仓库中，H1_2 运行不依赖外部 Gym/mjlab 仓库。
+完整 PPO、奖励、执行器和物理引擎适配说明见 [H1_2 训练文档](doc/h1_2_training.md)。
+
+### H1_2 验证
+
+离线数值测试无需 Isaac Sim 或 GPU：
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p test_h1_2_mdp.py
+```
+
+短程训练检查：
+
+```bash
+./unitree_rl_lab.sh -t --task Unitree-H1-2-Velocity --num_envs 512 --max_iterations 15 --run_name validation
+```
+
+已验证 20 项离线测试、512 环境下 15 次 PPO 更新、检查点加载和 TorchScript/ONNX 导出。短程验证只证明流程可运行，不代表步态已收敛；验证产物不会作为预训练模型提供。
+
+## G1-29dof MSLPO 工作流
+
+**第一阶段** 搜索 SIMBICON 步态参数并构建离散姿态库。
+**第二阶段** 在姿态库上训练分类 PPO 策略。以下仿真命令同样在 `env_isaacsim` 中执行。
 
 ---
 
